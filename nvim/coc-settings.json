@@ -1,0 +1,13 @@
+{
+    "suggest.fixInsertWord": false,
+    "suggest.noselect": false,
+    "suggest.floatEnable": false,
+    "suggest.fixInsertedWord": false,
+    "languageserver": {
+        "golang": {
+        "command": "gopls",
+        "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+        "filetypes": ["go"]
+        }
+    }
+}
