@@ -1,3 +1,6 @@
+""""" Leader Key """""
+let mapleader=" " " Map this first so that we can use it throught the file
+
 """""" Plugins """""
 call plug#begin('~/.config/nvim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'} " Auto completion
@@ -14,7 +17,7 @@ Plug 'fatih/vim-go' " Go support
 call plug#end()
 
 """""" Conquer of Code """""
-let g:coc_global_extensions=['coc-rust-analyzer', 'coc-docker']
+let g:coc_global_extensions=['coc-rust-analyzer', 'coc-docker', 'coc-explorer', 'coc-phpls']
 set nobackup " Some servers have issues with backup files
 set nowritebackup " We should be under version control so this is less of an issue
 set cmdheight=2 " Give more space for messages at bottom of screen
@@ -73,7 +76,21 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
+nmap <Leader>rn <Plug>(coc-rename)
+
+""""" CoC Explorer """""
+" Open explorer
+nmap <Leader>e :CocCommand explorer<CR> 
+
+""""" FZF/RG """""
+" Open file search
+nmap <Leader>f :Files<CR>
+" Open buffer search
+nmap <Leader>b :Buffers<CR>
+" Search with RipGrep from cwd
+nmap <Leader>r :Rg<CR>
+" History Search
+nmap <Leader>h :History<CR>
 
 """"" Nerd Commenter """""
 let g:NERDSpaceDelims=1 " Add one space after commenting
@@ -117,8 +134,7 @@ let g:airline_symbols.linenr = ''
 """"" Vim Go """""
 let g:go_def_mapping_enabled=0
 let g:go_code_completion_enabled=0
-let g:go_imports_autosave=1
-let g:go_metalinter_autosave=1
+let g:go_fmt_command="goimports"
 
 """"" General """""
 set hidden " Hide buffer when opening a new file (instead of closing it)
@@ -151,6 +167,7 @@ augroup numbertoggle
     autocmd BufEnter,FocusGained,InsertLeave * set relativenumber " Relative numbers on in normal mode or focussed
     autocmd BufLeave,FocusLost,InsertEnter * set norelativenumber " Relative numbers off in insert mode or lost focus
 augroup end
+set scrolloff=999 " Keep cursor in middle of screen so screen scrolls with cursor
 
 """"" Tabs, Spaces, Indenting """""
 filetype plugin indent on " Recognise file type, load plugins for detected file type, load indents for detected file type
@@ -168,6 +185,10 @@ set fileencoding=utf-8 " Output encoding when written to file
 let g:netrw_liststyle=3 " Tree view
 let g:netrw_banner=0 " Hide top banner
 
+""""" Splits """""
+set splitbelow
+set splitright
+
 """"" Disable Arrow Keys """""
 noremap  <Up> <NOP>
 noremap  <Down> <NOP>
@@ -180,4 +201,7 @@ inoremap  <Right> <NOP>
 
 """"" Bindings """""
 inoremap jj <Esc>
-let mapleader=" "
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>

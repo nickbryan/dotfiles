@@ -9,5 +9,7 @@
         "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
         "filetypes": ["go"]
         }
-    }
+    },
+    "rust-analyzer.updates.channel": "nightly",
+    "explorer.position": "floating"
 }
