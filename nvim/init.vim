@@ -7,7 +7,6 @@ let mapleader=" " " Map this first so that we can use it throught the file
 call plug#begin('~/.config/nvim/plugged')
 
 " VIM enhancements
-Plug 'editorconfig/editorconfig-vim' " Suppport for editor config files
 Plug 'justinmk/vim-sneak'
 
 " The best color scheme ever
@@ -21,27 +20,28 @@ Plug 'tpope/vim-surround' " Easy update matching brackets etc.
 Plug 'jiangmiao/auto-pairs' " Auto match brackets etc.
 
 " Fuzzy finder
-Plug 'airblade/vim-rooter'
+Plug 'airblade/vim-rooter' " Change the working dir to the project root
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 " Semantic language support
 Plug 'neovim/nvim-lspconfig' " Base config for lsp
-Plug 'nvim-lua/lsp_extensions.nvim' " Allows inlay hints from rust analyzer
-Plug 'hrsh7th/cmp-nvim-lsp', {'branch': 'main'}
-Plug 'hrsh7th/cmp-buffer', {'branch': 'main'}
-Plug 'hrsh7th/cmp-path', {'branch': 'main'}
-Plug 'hrsh7th/nvim-cmp', {'branch': 'main'} " A completion engine plugin for neovim written in Lua
+Plug 'hrsh7th/nvim-cmp' " A completion engine
+Plug 'hrsh7th/cmp-nvim-lsp' " LSP completion sources for nvim-cmp
+Plug 'hrsh7th/cmp-path'
+Plug 'hrsh7th/cmp-buffer'
 Plug 'ray-x/lsp_signature.nvim' " Show function signature when you type
 
 " Only because nvim-cmp _requires_ snippets
-Plug 'hrsh7th/cmp-vsnip', {'branch': 'main'}
+Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
+
+" Languag LSP
+Plug 'simrat39/rust-tools.nvim' " To enable more of the features of rust-analyzer, such as inlay hints and more! 
 
 " Syntactic language support
 Plug 'cespare/vim-toml'
 Plug 'stephpy/vim-yaml'
-Plug 'rust-lang/rust.vim'
 Plug 'dag/vim-fish'
 Plug 'plasticboy/vim-markdown'
 
@@ -74,104 +74,6 @@ function! LightlineFilename()
   return expand('%:t') !=# '' ? @% : '[No Name]'
 endfunction
 
-""""" LSP configuration """"
-lua << END
-local cmp = require'cmp'
-
-local lspconfig = require'lspconfig'
-cmp.setup({
-  snippet = {
-    -- REQUIRED by nvim-cmp. get rid of it once we can
-    expand = function(args)
-      vim.fn["vsnip#anonymous"](args.body)
-    end,
-  },
-  mapping = {
-    ['<Tab>'] = cmp.mapping.confirm({ select = true }),
-    ['<CR>'] = cmp.mapping.confirm({ select = true })
-  },
-  sources = cmp.config.sources({
-    -- TODO: currently snippets from lsp end up getting prioritized -- stop that!
-    { name = 'nvim_lsp' },
-  }, {
-    { name = 'path' },
-  }),
-  experimental = {
-    ghost_text = true,
-  },
-})
-
--- Enable completing paths in :
-cmp.setup.cmdline(':', {
-  sources = cmp.config.sources({
-    { name = 'path' }
-  })
-})
-
--- Setup lspconfig.
-local on_attach = function(client, bufnr)
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-
-  --Enable completion triggered by <c-x><c-o>
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  -- Mappings.
-  local opts = { noremap=true, silent=true }
-
-  -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  buf_set_keymap('n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<space>D', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<space>r', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
-  buf_set_keymap('n', '<space>a', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<space>e', '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<space>q', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-
-  -- Get signatures (and _only_ signatures) when in argument lists.
-  require "lsp_signature".on_attach({
-    doc_lines = 0,
-    handler_opts = {
-      border = "none"
-    },
-  })
-end
-
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
-lspconfig.rust_analyzer.setup {
-  on_attach = on_attach,
-  flags = {
-    debounce_text_changes = 150,
-  },
-  settings = {
-    ["rust-analyzer"] = {
-      cargo = {
-        allFeatures = true,
-      },
-    },
-  },
-  capabilities = capabilities,
-}
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = true,
-    signs = true,
-    update_in_insert = true,
-  }
-)
-END
-
-" Enable type inlay hints
-autocmd CursorHold,CursorHoldI *.rs :lua require'lsp_extensions'.inlay_hints{ only_current_line = true }
-
 """"" FZF/RG """""
 " Open file search
 nmap <Leader>f :Files<CR>
@@ -195,11 +97,6 @@ let g:vim_markdown_new_list_item_indent = 0
 let g:vim_markdown_auto_insert_bullets = 0
 let g:vim_markdown_frontmatter = 1
 
-""""" Rust.vim """""
-let g:rustfmt_autosave=1 " Format file on save
-let g:rustfmt_emit_files = 1 " Overwrite the file
-let g:rustfmt_fail_silently = 0
-
 """"" General """""
 set hidden " Hide buffer when opening a new file (instead of closing it)
 set visualbell " Don't make any noise
@@ -210,16 +107,21 @@ set modeline " See above
 set noshowmode " Hide the mode hint on the bottom line as we have it in status bar
 set signcolumn=yes " Always draw sign column. Prevent buffer moving when adding/deleting sign.
 set showcmd " Show command in status line (bottom right)
-set mouse=a " Enable mouse in all modes
 
-""""" Completion """""
+""""" Mouse """""
+set mouse=n " Enable mouse in normal mode
+autocmd FocusGained * set mouse+=n " Emable mouse again when we get focus
+autocmd FocusLost * set mouse= " Disable mouse when we leave focus so clicking back in does not move cursor
+
+"""" Completion """""
 " Better completion
 " menuone: popup even when there's only one match
 " noinsert: Do not insert text until a selection is made
 " noselect: Do not select, force user to select one from the menu
 set completeopt=menuone,noinsert,noselect
-" Better display for messages
-set cmdheight=2
+set shortmess+=c " Avoid showing extra messages when using completion
+" Better display for messag
+set cmdheight=2 " Better display for messages"
 " You will have bad experience for diagnostic messages when it's default 4000.
 set updatetime=300
 
@@ -293,9 +195,6 @@ inoremap  <Down> <NOP>
 inoremap  <Left> <NOP>
 inoremap  <Right> <NOP>
 
-" ; as :
-nnoremap ; :
-
 " Left and right to switch buffers
 nnoremap <left> :bp<CR>
 nnoremap <right> :bn<CR>
@@ -326,6 +225,114 @@ nnoremap <leader><leader> <c-^>
 
 " Open new file adjacent to current file
 nnoremap <leader>o :e <C-R>=expand("%:p:h") . "/" <CR>
+
+""""" LSP """""
+" Configure LSP through rust-tools.nvim plugin.
+" rust-tools will configure and enable certain LSP features for us.
+" See https://github.com/simrat39/rust-tools.nvim#configuration
+lua <<EOF
+
+-- nvim_lsp object
+local nvim_lsp = require'lspconfig'
+
+local opts = {
+    tools = {
+        autoSetHints = true,
+        hover_with_actions = true,
+        runnables = {
+            use_telescope = true
+        },
+        inlay_hints = {
+            show_parameter_hints = false,
+            parameter_hints_prefix = "",
+            other_hints_prefix = "",
+        },
+    },
+
+    -- all the opts to send to nvim-lspconfig
+    -- these override the defaults set by rust-tools.nvim
+    -- see https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#rust_analyzer
+    server = {
+        -- on_attach is a callback called when the language server attachs to the buffer
+        -- on_attach = on_attach,
+        settings = {
+            -- to enable rust-analyzer settings visit:
+            -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
+            ["rust-analyzer"] = {
+                -- enable clippy on save
+                checkOnSave = {
+                    command = "clippy"
+                },
+            }
+        }
+    },
+}
+
+require('rust-tools').setup(opts)
+EOF
+
+" Code navigation shortcuts
+" as found in :help lsp
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+
+" Quick-fix
+nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
+
+" Setup Completion
+" See https://github.com/hrsh7th/nvim-cmp#basic-configuration
+lua <<EOF
+local cmp = require'cmp'
+cmp.setup({
+  snippet = {
+    expand = function(args)
+        vim.fn["vsnip#anonymous"](args.body)
+    end,
+  },
+  mapping = {
+    ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+    ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+    -- Add tab support
+    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
+    ['<Tab>'] = cmp.mapping.select_next_item(),
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({
+      behavior = cmp.ConfirmBehavior.Insert,
+      select = true,
+    })
+  },
+
+  -- Installed sources
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'vsnip' },
+    { name = 'path' },
+    { name = 'buffer' },
+  },
+})
+EOF
+
+" Show diagnostic popup on cursor hover
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+
+" Goto previous/next diagnostic warning/error
+nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+
+" Format on save
+autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 200)
 
 """"" Autocommands """""
 " Prevent accidental writes to buffers that shouldn't be edited
