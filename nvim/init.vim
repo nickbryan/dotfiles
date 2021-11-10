@@ -1,7 +1,7 @@
 set shell=/bin/bash " Fish can be a bit of a nightmare
 
 """"" Leader Key """""
-let mapleader=" " " Map this first so that we can use it throught the file
+let mapleader="\<Space>" " Map this first so that we can use it throught the file
 
 """""" Plugins """""
 call plug#begin('~/.config/nvim/plugged')
@@ -110,8 +110,8 @@ set showcmd " Show command in status line (bottom right)
 
 """"" Mouse """""
 set mouse=n " Enable mouse in normal mode
-autocmd FocusGained * set mouse+=n " Emable mouse again when we get focus
-autocmd FocusLost * set mouse= " Disable mouse when we leave focus so clicking back in does not move cursor
+autocmd FocusGained * set mouse=n " Emable mouse again when we get focus
+autocmd FocusLost * set mouse="" " Disable mouse when we leave focus so clicking back in does not move cursor
 
 """" Completion """""
 " Better completion
@@ -282,6 +282,7 @@ nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> <leader>rn  <cmd>lua vim.lsp.buf.rename()<CR>
 
 " Quick-fix
 nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
@@ -325,7 +326,7 @@ cmp.setup({
 EOF
 
 " Show diagnostic popup on cursor hover
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+"autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
 " Goto previous/next diagnostic warning/error
 nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
