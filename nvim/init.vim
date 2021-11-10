@@ -21,8 +21,10 @@ Plug 'jiangmiao/auto-pairs' " Auto match brackets etc.
 
 " Fuzzy finder
 Plug 'airblade/vim-rooter' " Change the working dir to the project root
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'kyazdani42/nvim-web-devicons'
 
 " Semantic language support
 Plug 'neovim/nvim-lspconfig' " Base config for lsp
@@ -74,23 +76,13 @@ function! LightlineFilename()
   return expand('%:t') !=# '' ? @% : '[No Name]'
 endfunction
 
-""""" FZF/RG """""
-" Open file search
-nmap <Leader>f :Files<CR>
-" Open buffer search
-nmap <Leader>b :Buffers<CR>
-" History Search
-nmap <Leader>h :History<CR>
-" <leader>s for Rg search
-noremap <leader>s :Rg<CR>
-function! s:list_cmd()
-  let base = fnamemodify(expand('%'), ':h:.:S')
-  return base == '.' ? 'fd --type file --follow' : printf('fd --type file --follow | proximity-sort %s', shellescape(expand('%')))
-endfunction
-
-command! -bang -nargs=? -complete=dir Files
-  \ call fzf#vim#files(<q-args>, {'source': s:list_cmd(),
-  \                               'options': '--tiebreak=index'}, <bang>0)
+""""" Fuzz Finder (Telescope) """""
+" Find files using Telescope command-line sugar.
+nnoremap <leader>f <cmd>Telescope find_files<cr>
+nnoremap <leader>s <cmd>Telescope live_grep<cr>
+nnoremap <leader>b <cmd>Telescope buffers<cr>
+nnoremap <leader>h <cmd>Telescope help_tags<cr>
+nnoremap <leader>e <cmd>Telescope file_browser<cr>
 
 """"" Markdown """""
 let g:vim_markdown_new_list_item_indent = 0
@@ -264,6 +256,12 @@ local opts = {
 }
 
 require('rust-tools').setup(opts)
+require('nvim-web-devicons').setup {
+ -- globally enable default icons (default to false)
+ -- will get overriden by `get_icons` option
+ default = true;
+ }
+require('telescope').load_extension('fzf')
 EOF
 
 " See `:help vim.lsp.*` for documentation on any of the below functions
@@ -276,7 +274,7 @@ nnoremap <silent> <leader>D <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> <leader>e <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
+nnoremap <silent> <leader>ld <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
 nnoremap <silent> [d <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> ]d <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 nnoremap <silent> <leader>q <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
