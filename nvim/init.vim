@@ -46,6 +46,7 @@ Plug 'cespare/vim-toml'
 Plug 'stephpy/vim-yaml'
 Plug 'dag/vim-fish'
 Plug 'plasticboy/vim-markdown'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
 
@@ -78,16 +79,20 @@ endfunction
 
 """"" Fuzz Finder (Telescope) """""
 " Find files using Telescope command-line sugar.
-nnoremap <leader>f <cmd>Telescope find_files<cr>
-nnoremap <leader>s <cmd>Telescope live_grep<cr>
-nnoremap <leader>b <cmd>Telescope buffers<cr>
-nnoremap <leader>h <cmd>Telescope help_tags<cr>
-nnoremap <leader>e <cmd>Telescope file_browser<cr>
+nnoremap <leader>f <cmd>lua require('telescope.builtin').find_files()<cr>
+nnoremap <leader>s <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>b <cmd>lua require('telescope.builtin').buffers()<cr>
+nnoremap <leader>h <cmd>lua require('telescope.builtin').help_tags()<cr>
+nnoremap <leader>e <cmd>lua require('telescope.builtin').file_browser()<cr>
+nnoremap <leader>ee <cmd>lua require('telescope.builtin').file_browser({cwd="%:p:h"})<cr>
 
 """"" Markdown """""
 let g:vim_markdown_new_list_item_indent = 0
 let g:vim_markdown_auto_insert_bullets = 0
 let g:vim_markdown_frontmatter = 1
+
+""""" Vim-Go """""
+let g:go_gopls_enabled = 0
 
 """"" General """""
 set hidden " Hide buffer when opening a new file (instead of closing it)
@@ -227,7 +232,7 @@ lua <<EOF
 -- nvim_lsp object
 local nvim_lsp = require'lspconfig'
 
-local opts = {
+require('rust-tools').setup({
     tools = {
         inlay_hints = {
             show_parameter_hints = false,
@@ -253,15 +258,51 @@ local opts = {
             }
         }
     },
+})
+
+nvim_lsp.gopls.setup {
+    cmd = {"gopls", "serve"},
 }
 
-require('rust-tools').setup(opts)
+-- goimports function for auto running later
+function goimports(timeout_ms)
+    local context = { only = { "source.organizeImports" } }
+    vim.validate { context = { context, "t", true } }
+
+    local params = vim.lsp.util.make_range_params()
+    params.context = context
+
+    -- See the implementation of the textDocument/codeAction callback
+    -- (lua/vim/lsp/handler.lua) for how to do this properly.
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
+    if not result or next(result) == nil then return end
+    local actions = result[1].result
+    if not actions then return end
+    local action = actions[1]
+
+    -- textDocument/codeAction can return either Command[] or CodeAction[]. If it
+    -- is a CodeAction, it can have either an edit, a command or both. Edits
+    -- should be executed first.
+    if action.edit or type(action.command) == "table" then
+      if action.edit then
+        vim.lsp.util.apply_workspace_edit(action.edit)
+      end
+      if type(action.command) == "table" then
+        vim.lsp.buf.execute_command(action.command)
+      end
+    else
+      vim.lsp.buf.execute_command(action)
+    end
+end
+
+nvim_lsp.intelephense.setup {}
+
 require('nvim-web-devicons').setup {
- -- globally enable default icons (default to false)
- -- will get overriden by `get_icons` option
- default = true;
+    default = true;
  }
+
 require('telescope').load_extension('fzf')
+
 EOF
 
 " See `:help vim.lsp.*` for documentation on any of the below functions
@@ -278,6 +319,8 @@ nnoremap <silent> <leader>ld <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()
 nnoremap <silent> [d <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
 nnoremap <silent> ]d <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 nnoremap <silent> <leader>q <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
+nnoremap <silent> <leader>fu <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> <leader>rr <cmd> lua require('rust-tools.runnables').runnables()<CR>
 
 " Setup Completion
 " See https://github.com/hrsh7th/nvim-cmp#basic-configuration
@@ -329,10 +372,11 @@ cmp.setup.cmdline(':', {
 })
 EOF
 
-" Format on save
-autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 200)
-
 """"" Autocommands """""
+" Format on save
+autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 5000)
+autocmd BufWritePre *.go lua goimports(1000)
+
 " Prevent accidental writes to buffers that shouldn't be edited
 autocmd BufRead *.orig set readonly
 autocmd BufRead *.pacnew set readonly
