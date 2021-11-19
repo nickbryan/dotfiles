@@ -32,6 +32,7 @@ Plug 'hrsh7th/nvim-cmp' " A completion engine
 Plug 'hrsh7th/cmp-nvim-lsp' " LSP completion sources for nvim-cmp
 Plug 'hrsh7th/cmp-path'
 Plug 'hrsh7th/cmp-buffer'
+Plug 'hrsh7th/cmp-cmdline' " Command mode auto complete
 Plug 'ray-x/lsp_signature.nvim' " Show function signature when you type
 
 " Only because nvim-cmp _requires_ snippets
@@ -93,6 +94,8 @@ let g:vim_markdown_frontmatter = 1
 
 """"" Vim-Go """""
 let g:go_gopls_enabled = 0
+let g:go_metalinter_autosave = 1
+let g:go_fmt_autosave = 0
 
 """"" General """""
 set hidden " Hide buffer when opening a new file (instead of closing it)
@@ -310,6 +313,7 @@ nnoremap <silent> gD <cmd>lua vim.lsp.buf.declaration()<CR>
 nnoremap <silent> gd <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> K <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gi <cmd>lua vim.lsp.buf.implementation()<CR>
+
 nnoremap <silent> <C-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> <leader>D <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
@@ -368,7 +372,15 @@ cmp.setup({
 cmp.setup.cmdline(':', {
   sources = cmp.config.sources({
     { name = 'path' }
+  }, {
+    { name = 'cmdline' }
   })
+})
+
+cmp.setup.cmdline('/', {
+  sources = {
+    { name = 'buffer' }
+  }
 })
 EOF
 
