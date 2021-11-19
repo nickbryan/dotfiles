@@ -39,7 +39,7 @@ Plug 'ray-x/lsp_signature.nvim' " Show function signature when you type
 Plug 'hrsh7th/cmp-vsnip'
 Plug 'hrsh7th/vim-vsnip'
 
-" Languag LSP
+" Language LSP
 Plug 'simrat39/rust-tools.nvim' " To enable more of the features of rust-analyzer, such as inlay hints and more! 
 
 " Syntactic language support
@@ -234,6 +234,8 @@ lua <<EOF
 
 -- nvim_lsp object
 local nvim_lsp = require'lspconfig'
+
+require "lsp_signature".setup()
 
 require('rust-tools').setup({
     tools = {
