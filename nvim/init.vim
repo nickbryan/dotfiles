@@ -49,7 +49,6 @@ Plug 'simrat39/rust-tools.nvim' " To enable more of the features of rust-analyze
 Plug 'cespare/vim-toml'
 Plug 'stephpy/vim-yaml'
 Plug 'dag/vim-fish'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
 
@@ -87,17 +86,7 @@ nnoremap <leader>s <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>b <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>h <cmd>lua require('telescope.builtin').help_tags()<cr>
 nnoremap <leader>e <cmd>lua require('telescope').extensions.file_browser.file_browser()<cr>
-nnoremap <leader>ee <cmd>lua require('telescope').extensions.file_browser.file_browser({files = false})<cr>
-
-""""" Markdown """""
-let g:vim_markdown_new_list_item_indent = 0
-let g:vim_markdown_auto_insert_bullets = 0
-let g:vim_markdown_frontmatter = 1
-
-""""" Vim-Go """""
-let g:go_gopls_enabled = 0
-let g:go_metalinter_autosave = 1
-let g:go_fmt_autosave = 0
+nnoremap <leader>ee <cmd>lua require('telescope').extensions.file_browser.file_browser({files = false, hidden = false})<cr>
 
 """"" General """""
 set hidden " Hide buffer when opening a new file (instead of closing it)
@@ -269,40 +258,29 @@ require('rust-tools').setup({
     },
 })
 
+util = require "lspconfig/util"
+
 nvim_lsp.gopls.setup {
     cmd = {"gopls", "serve"},
+    filetypes = {"go", "gomod"},
+    root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+    settings = {
+        gopls = {
+            analyses = {
+                fieldalignment = true,
+                nilness = true,
+                shadow = true,
+                unusedparams = true,
+                unusedwrite = true,
+                useany = true,
+            },
+            gofumpt = true,
+            usePlaceholders = true,
+            experimentalPostfixCompletions = true,
+            staticcheck = true,
+        },
+    },
 }
-
--- goimports function for auto running later
-function goimports(timeout_ms)
-    local context = { only = { "source.organizeImports" } }
-    vim.validate { context = { context, "t", true } }
-
-    local params = vim.lsp.util.make_range_params()
-    params.context = context
-
-    -- See the implementation of the textDocument/codeAction callback
-    -- (lua/vim/lsp/handler.lua) for how to do this properly.
-    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
-    if not result or next(result) == nil then return end
-    local actions = result[1].result
-    if not actions then return end
-    local action = actions[1]
-
-    -- textDocument/codeAction can return either Command[] or CodeAction[]. If it
-    -- is a CodeAction, it can have either an edit, a command or both. Edits
-    -- should be executed first.
-    if action.edit or type(action.command) == "table" then
-      if action.edit then
-        vim.lsp.util.apply_workspace_edit(action.edit)
-      end
-      if type(action.command) == "table" then
-        vim.lsp.buf.execute_command(action.command)
-      end
-    else
-      vim.lsp.buf.execute_command(action)
-    end
-end
 
 nvim_lsp.intelephense.setup {}
 
@@ -405,7 +383,7 @@ EOF
 """"" Autocommands """""
 " Format on save
 autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 200)
-autocmd BufWritePre *.go lua goimports(1000)
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
 
 " Prevent accidental writes to buffers that shouldn't be edited
 autocmd BufRead *.orig set readonly
@@ -419,9 +397,6 @@ if has("autocmd")
   " https://stackoverflow.com/questions/31449496/vim-ignore-specifc-file-in-autocommand
   au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 endif
-
-" Help filetype detection
-autocmd BufRead *.md set filetype=markdown
 
 " Show diagnostic popup on cursor hold
 autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
