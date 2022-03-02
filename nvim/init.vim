@@ -22,8 +22,11 @@ Plug 'jiangmiao/auto-pairs' " Auto match brackets etc.
 " Fuzzy finder
 Plug 'airblade/vim-rooter' " Change the working dir to the project root
 Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
+Plug 'nvim-telescope/telescope-file-browser.nvim'
+Plug 'nvim-telescope/telescope-ui-select.nvim'
 Plug 'kyazdani42/nvim-web-devicons'
 
 " Semantic language support
@@ -46,7 +49,6 @@ Plug 'simrat39/rust-tools.nvim' " To enable more of the features of rust-analyze
 Plug 'cespare/vim-toml'
 Plug 'stephpy/vim-yaml'
 Plug 'dag/vim-fish'
-Plug 'plasticboy/vim-markdown'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 
 call plug#end()
@@ -84,8 +86,8 @@ nnoremap <leader>f <cmd>lua require('telescope.builtin').find_files()<cr>
 nnoremap <leader>s <cmd>lua require('telescope.builtin').live_grep()<cr>
 nnoremap <leader>b <cmd>lua require('telescope.builtin').buffers()<cr>
 nnoremap <leader>h <cmd>lua require('telescope.builtin').help_tags()<cr>
-nnoremap <leader>e <cmd>lua require('telescope.builtin').file_browser()<cr>
-nnoremap <leader>ee <cmd>lua require('telescope.builtin').file_browser({cwd="%:p:h"})<cr>
+nnoremap <leader>e <cmd>lua require('telescope').extensions.file_browser.file_browser()<cr>
+nnoremap <leader>ee <cmd>lua require('telescope').extensions.file_browser.file_browser({files = false})<cr>
 
 """"" Markdown """""
 let g:vim_markdown_new_list_item_indent = 0
@@ -239,6 +241,8 @@ require "lsp_signature".setup()
 
 require('rust-tools').setup({
     tools = {
+        autoSetHints = true,
+        hover_with_actions = true,
         inlay_hints = {
             show_parameter_hints = false,
             parameter_hints_prefix = "",
@@ -306,7 +310,23 @@ require('nvim-web-devicons').setup {
     default = true;
  }
 
+require('telescope').setup {
+    extensions = {
+        file_browser = {
+            path = "%:p:h",
+            grouped = true,
+            hidden = true,
+            select_buffer = true,
+        },
+        ["ui-select"] = {
+            require("telescope.themes").get_cursor {},
+        },
+    },
+}
+
 require('telescope').load_extension('fzf')
+require('telescope').load_extension('file_browser')
+require('telescope').load_extension('ui-select')
 
 EOF
 
@@ -321,10 +341,10 @@ nnoremap <silent> <leader>D <cmd>lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> <leader>r <cmd>lua vim.lsp.buf.rename()<CR>
 nnoremap <silent> <leader>a <cmd>lua vim.lsp.buf.code_action()<CR>
 nnoremap <silent> gr <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> <leader>ld <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
-nnoremap <silent> [d <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent> ]d <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-nnoremap <silent> <leader>q <cmd>lua vim.lsp.diagnostic.set_loclist()<CR>
+nnoremap <silent> <leader>ld <cmd>lua vim.diagnostic.open_float(nil, { focusable = false })<CR>
+nnoremap <silent> [d <cmd>lua vim.diagnostic.goto_prev()<CR>
+nnoremap <silent> ]d <cmd>lua vim.diagnostic.goto_next()<CR>
+nnoremap <silent> <leader>q <cmd>lua vim.diagnostic.set_loclist()<CR>
 nnoremap <silent> <leader>fu <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> <leader>rr <cmd> lua require('rust-tools.runnables').runnables()<CR>
 
@@ -339,18 +359,14 @@ cmp.setup({
     end,
   },
   mapping = {
-    ['<C-n>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-    ['<C-p>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-    ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
-    ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
+    ['<Down>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<Up>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+    ['<Tab>'] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Select }),
+    ['<S-Tab>'] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Select }),
     ['<C-d>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<Tab>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
-    }),
     ['<CR>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
@@ -388,7 +404,7 @@ EOF
 
 """"" Autocommands """""
 " Format on save
-autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 5000)
+autocmd BufWritePre *.rs lua vim.lsp.buf.formatting_sync(nil, 200)
 autocmd BufWritePre *.go lua goimports(1000)
 
 " Prevent accidental writes to buffers that shouldn't be edited
@@ -406,3 +422,7 @@ endif
 
 " Help filetype detection
 autocmd BufRead *.md set filetype=markdown
+
+" Show diagnostic popup on cursor hold
+autocmd CursorHold * lua vim.diagnostic.open_float(nil, { focusable = false })
+
