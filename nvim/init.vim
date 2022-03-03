@@ -1,4 +1,4 @@
-set shell=/bin/bash " Fish can be a bit of a nightmare
+set shell=/usr/local/bin/fish
 
 """"" Leader Key """""
 let mapleader="\<Space>" " Map this first so that we can use it throught the file
@@ -18,6 +18,7 @@ Plug 'machakann/vim-highlightedyank' " Highlight yank
 Plug 'andymass/vim-matchup' " Highlight matching brackets etc.
 Plug 'tpope/vim-surround' " Easy update matching brackets etc.
 Plug 'jiangmiao/auto-pairs' " Auto match brackets etc.
+Plug 'voldikss/vim-floaterm' " Floating terminal window inside vim
 
 " Fuzzy finder
 Plug 'airblade/vim-rooter' " Change the working dir to the project root
@@ -57,6 +58,11 @@ if has('nvim')
     set inccommand=nosplit
     noremap <C-q> :confirm qall<CR>
 end
+
+""""" Floaterm """""
+autocmd VimEnter * FloatermNew --silent
+nnoremap <silent> <F12> :FloatermToggle<CR>
+tnoremap <silent> <F12> <C-\><C-n>:FloatermToggle<CR>
 
 """"" Sneak """""
 let g:sneak#s_next = 1
