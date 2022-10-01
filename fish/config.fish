@@ -7,4 +7,6 @@ set -x GOPATH ~/go
 # add the go bin path to be able to execute our programs
 set -x PATH $PATH ~/go/bin $GOPATH/bin
 set -g fish_user_paths "/usr/local/sbin" $fish_user_paths
+set -g fish_user_paths "/opt/homebrew/bin" $fish_user_paths
+set -g fish_user_paths "/opt/homebrew/sbin" $fish_user_paths
 
