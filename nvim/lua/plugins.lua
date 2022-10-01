@@ -36,7 +36,7 @@ return require('packer').startup({function(use)
     }
     use {
         'williamboman/mason-lspconfig.nvim',
-        config = function() require('mason-lspconfig').setup {} end
+        config = function() require('mason-lspconfig').setup({ ensure_installed = { "gopls", "rust-analyzer" }}) end
     }
     use 'neovim/nvim-lspconfig' -- Base configurations for a collection of lsp clients
 
@@ -59,6 +59,13 @@ return require('packer').startup({function(use)
     -- Parsing
     --
     use 'nvim-treesitter/nvim-treesitter'
+
+    -- GO
+    --
+    use {
+        'ray-x/go.nvim',
+        requires = { 'ray-x/guihua.lua' },
+    }
 end,
 config = {
   package_root = vim.fn.stdpath('config') .. '/site/pack'

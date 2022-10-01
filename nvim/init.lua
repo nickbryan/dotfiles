@@ -13,4 +13,5 @@ require('rust_analyzer_setup')
 require('lsp_config')
 require('telescope_setup')
 require('treesitter_setup')
+require('go_setup')
 

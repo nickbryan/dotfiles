@@ -26,8 +26,7 @@ cmd("CursorHold", { pattern = {"*"}, callback = function() vim.diagnostic.open_f
 cmd("VimEnter", { pattern = {"*"}, command = ":FloatermNew --silent <CR>" })
 
 -- Format on save
-cmd("BufWritePre", { pattern = {"*.rs"}, callback = function() vim.lsp.buf.formatting_sync(nil, 200) end})
-cmd("BufWritePre", { pattern = {"*.go"}, callback = function() vim.lsp.buf.formatting() end})
+cmd("BufWritePre", { pattern = {"*.rs", "*.go"}, callback = function() vim.lsp.buf.formatting_sync(nil, 200) end})
 
 -- Jump to last edit position on opening file
 vim.cmd [[au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]]

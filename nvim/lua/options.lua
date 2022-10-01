@@ -11,7 +11,6 @@ opt.inccommand = "nosplit"
 opt.hidden = true -- Hide buffer when opening a new file (instead of closing it).
 opt.visualbell = true -- Dont make any noise.
 opt.undofile = true -- Save the undo history when closing a buffer.
-opt.undodir = "~/.config/nvim/undodir"
 opt.modelines = 0 -- Do not allow modelines in file (potential vulnerability).
 opt.modeline = true -- See above.
 opt.showmode = false -- Hide the mode hint on the bottom line as we have it in the status bar.
