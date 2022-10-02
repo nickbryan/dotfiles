@@ -19,7 +19,6 @@ return require('packer').startup({function(use)
 
     -- Fuzzy Finder
     --
-    use 'airblade/vim-rooter' -- Change the working directory to the project root
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.0',
         requires = { {'nvim-lua/plenary.nvim'}, {'kyazdani42/nvim-web-devicons'} }
