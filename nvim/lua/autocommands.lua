@@ -31,3 +31,5 @@ cmd("BufWritePre", { pattern = {"*.rs", "*.go"}, callback = function() vim.lsp.b
 -- Jump to last edit position on opening file
 vim.cmd [[au BufReadPost * if expand('%:p') !~# '\m/\.git/' && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif]]
 
+-- Lint
+cmd("BufWritePost", { pattern = {"*.go"}, callback = function() require('lint').try_lint() end})

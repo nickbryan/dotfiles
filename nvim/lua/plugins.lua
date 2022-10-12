@@ -12,10 +12,14 @@ return require('packer').startup({function(use)
     use 'Yggdroot/indentLine' -- Show lines for indending
     use {
 	    "windwp/nvim-autopairs",
-        config = function() require("nvim-autopairs").setup {} end
+        config = function() require("nvim-autopairs").setup {} end,
     } -- Auto match brackets etc.
     use 'danilamihailov/beacon.nvim' -- Show cursor on jump
     use 'voldikss/vim-floaterm' -- Floating terminal window
+    use {
+        'kosayoda/nvim-lightbulb', -- Show lightbulb for code actions
+        config = function() require('nvim-lightbulb').setup({autocmd = {enabled = true}}) end,
+    }
 
     -- Fuzzy Finder
     --
@@ -64,6 +68,12 @@ return require('packer').startup({function(use)
     use {
         'ray-x/go.nvim',
         requires = { 'ray-x/guihua.lua' },
+    }
+    use {
+        'mfussenegger/nvim-lint',
+        config = function() require('lint').linters_by_ft = {
+            go = {'golangcilint'},
+        } end,
     }
 end,
 config = {

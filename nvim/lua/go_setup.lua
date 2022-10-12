@@ -1,1 +1,1 @@
-require('go').setup({lsp_cfg = true, lsp_keymaps = false, run_in_floaterm = true })
+require('go').setup({lsp_cfg = true, lsp_keymaps = false, run_in_floaterm = true, build_tags = "unit,integration" })
