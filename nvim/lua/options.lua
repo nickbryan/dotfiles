@@ -1,7 +1,7 @@
 local opt = vim.opt
 
 -- Shell
-opt.shell = "/opt/homebrew/bin/fish"
+opt.shell = "/bin/zsh"
 
 -- nvim specific
 opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
@@ -38,7 +38,7 @@ opt.smartcase = true -- Auto switch to case sensitive when uppercase letter is u
 -- Theme
 opt.termguicolors = true
 opt.background = "dark"
-vim.cmd([[colorscheme everforest]])
+vim.cmd([[colorscheme gruvbox]])
 vim.g.everforest_background="medium"
 
 -- Lines and Numbers

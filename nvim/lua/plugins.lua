@@ -3,7 +3,7 @@ return require('packer').startup({function(use)
 
     -- GUI enhancements
     --
-    use "sainnhe/everforest" -- Theme
+    use { "ellisonleao/gruvbox.nvim" } -- Theme
     use {
         'nvim-lualine/lualine.nvim',
         requires = { 'kyazdani42/nvim-web-devicons', opt = true }
@@ -33,14 +33,6 @@ return require('packer').startup({function(use)
 
     -- LSP
     --
-    use {
-        'williamboman/mason.nvim',
-        config = function() require('mason').setup {} end
-    }
-    use {
-        'williamboman/mason-lspconfig.nvim',
-        config = function() require('mason-lspconfig').setup({ ensure_installed = { "gopls", "rust-analyzer" }}) end
-    }
     use 'neovim/nvim-lspconfig' -- Base configurations for a collection of lsp clients
 
     -- Rust
