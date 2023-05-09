@@ -39,7 +39,6 @@ opt.smartcase = true -- Auto switch to case sensitive when uppercase letter is u
 opt.termguicolors = true
 opt.background = "dark"
 vim.cmd([[colorscheme gruvbox]])
-vim.g.everforest_background="medium"
 
 -- Lines and Numbers
 opt.wrap = false -- Do not wrap lines.
