@@ -104,3 +104,7 @@ export EDITOR='nvim'
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export GOPATH=~/go
+export GOPRIVATE=gitlab.com/nickbryan/recipist
+export PATH $PATH ~/go/bin $GOPATH/bin
