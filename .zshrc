@@ -107,4 +107,4 @@ export EDITOR='nvim'
 
 export GOPATH=~/go
 export GOPRIVATE=gitlab.com/nickbryan/recipist
-export PATH $PATH ~/go/bin $GOPATH/bin
+export PATH=$PATH:~/go/bin:$GOPATH/bin
