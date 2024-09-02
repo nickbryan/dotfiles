@@ -15,3 +15,4 @@ require('telescope_setup')
 require('treesitter_setup')
 require('go_setup')
 
+require("lspconfig").clangd.setup({})

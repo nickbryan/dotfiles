@@ -24,7 +24,7 @@ return require('packer').startup({function(use)
     -- Fuzzy Finder
     --
     use {
-        'nvim-telescope/telescope.nvim', tag = '0.1.0',
+        'nvim-telescope/telescope.nvim',
         requires = { {'nvim-lua/plenary.nvim'}, {'kyazdani42/nvim-web-devicons'} }
     }
     use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
