@@ -1,5 +1,3 @@
-local builtin = require("telescope.builtin")
-
 return {
     {
         url = "https://github.com/nvim-telescope/telescope.nvim",
