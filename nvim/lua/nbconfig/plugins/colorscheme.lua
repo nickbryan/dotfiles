@@ -3,7 +3,7 @@ return {
     tag = "v4.8.0",
     lazy = false,
     priority = 1000,
-    config = function ()
+    config = function()
         vim.cmd([[colorscheme tokyonight-night]])
     end,
 }

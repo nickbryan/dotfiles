@@ -1,3 +1,7 @@
+-- Leader
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
+
 -- Disable Bindings
 vim.keymap.set({ "n", "i" }, "<Up>", "<Nop>", { noremap = true })
 vim.keymap.set({ "n", "i" }, "<Down>", "<Nop>", { noremap = true })
@@ -12,10 +16,6 @@ vim.keymap.set("i", "jj", "<Esc>", { noremap = true, desc = "Exit insert mode" }
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Project view - netrw" })
 vim.keymap.set("n", "<Left>", ":bp<CR>", { noremap = true, desc = "Previous buffer" })
 vim.keymap.set("n", "<Right>", ":bn<CR>", { noremap = true, desc = "Next buffer" })
-
--- Leader
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 
 -- Move by line (for line that span multiple rows)
 vim.keymap.set("n", "j", "gj", { noremap = true })
