@@ -13,6 +13,9 @@ return {
                     require("telescope").load_extension("fzf")
                 end,
             },
+            {
+                url = "https://github.com/nvim-tree/nvim-web-devicons",
+            },
         },
         keys = {
             { "<leader>pf", function() require("telescope.builtin").find_files({ hidden = true }) end, mode = "n", noremap = true, desc = "Search for project files" },
