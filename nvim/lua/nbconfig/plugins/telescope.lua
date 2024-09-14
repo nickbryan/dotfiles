@@ -21,6 +21,7 @@ return {
             { "<leader>pf", function() require("telescope.builtin").find_files({ hidden = true }) end, mode = "n", noremap = true, desc = "Search for project files" },
             { "<leader>ps", function() require("telescope.builtin").live_grep() end,                   mode = "n", noremap = true, desc = "Search for string in project files" },
             { "<leader>e",  function() require("telescope.builtin").oldfiles({ cwd_only = true }) end, mode = "n", noremap = true, desc = "Search for previously opened files" },
+            { "<leader>vh", function() require("telescope.builtin").help_tags() end,                   mode = "n", noremap = true, desc = "Vim help tags" },
         },
     },
 }

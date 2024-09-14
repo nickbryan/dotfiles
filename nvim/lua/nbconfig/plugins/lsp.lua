@@ -12,14 +12,48 @@ return {
     {
         url = "https://github.com/hrsh7th/nvim-cmp",
         branch = "main", -- Convert this to a tag/release version one day.
-        event = "InsertEnter",
-        opts = {
-            sources = {
-                { name = "nvim_lsp" },
-            },
-            -- Be Explicit with mappings
-            -- Snippets?
+        dependencies = {
+            { url = "https://github.com/hrsh7th/cmp-path" },
+            { url = "https://github.com/hrsh7th/cmp-buffer" },
+            { url = "https://github.com/hrsh7th/cmp-nvim-lsp" },
         },
+        event = "InsertEnter",
+        config = function()
+            local cmp = require("cmp")
+            cmp.setup({
+                sources = {
+                    { name = "path" },
+                    { name = "nvim_lsp" },
+                    { name = "buffer" },
+                },
+                snippet = {
+                    expand = function(args)
+                        -- TODO: Should I use luasnip? What is this actually doing?
+                        -- This is the default so I can remove it (confirmed) if I don"t use a different engine.
+                        vim.snippet.expand(args.body)
+                    end,
+                },
+                mapping = cmp.mapping.preset.insert({
+                    -- TODO: custom key mappings.
+                }),
+                -- TODO: use formatting function to show source https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
+            })
+        end,
+    },
+    {
+        url = "https://github.com/hrsh7th/cmp-cmdline",
+        event = "CmdlineEnter",
+        config = function()
+            local cmp = require("cmp")
+            cmp.setup.cmdline({ "/", "?" }, {
+                mapping = cmp.mapping.preset.cmdline(),
+                sources = { { name = "buffer" } }
+            })
+            cmp.setup.cmdline(":", {
+                mapping = cmp.mapping.preset.cmdline({}),
+                sources = cmp.config.sources({ { name = "path" } }, { { name = "cmdline" } }),
+            })
+        end,
     },
     {
         url = "https://github.com/neovim/nvim-lspconfig",
@@ -32,8 +66,12 @@ return {
         cmd = "LspInfo",
         event = { "BufReadPre", "BufNewFile" },
         config = function()
+            local lsp_zero = require("lsp-zero")
+
+            lsp_zero.buffer_autoformat()
+
             -- TODO: preoperly configure all of this
-            require("lsp-zero").extend_lspconfig({
+            lsp_zero.extend_lspconfig({
                 sign_text = true,
                 lsp_attach = function(_, bufnr)
                     local opts = { buffer = bufnr }
@@ -45,21 +83,22 @@ return {
                     vim.keymap.set("n", "go", "<cmd>lua vim.lsp.buf.type_definition()<cr>", opts)
                     vim.keymap.set("n", "gr", "<cmd>lua vim.lsp.buf.references()<cr>", opts)
                     vim.keymap.set("n", "gs", "<cmd>lua vim.lsp.buf.signature_help()<cr>", opts)
-                    vim.keymap.set("n", "<F2>", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
-                    vim.keymap.set({ "n", "x" }, "<F3>", "<cmd>lua vim.lsp.buf.format({async = true})<cr>", opts)
-                    vim.keymap.set("n", "<F4>", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+                    vim.keymap.set("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<cr>", opts)
+                    vim.keymap.set("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<cr>", opts)
+                    -- workspace symbol? leader vws
+                    -- vim diagnostics open float? leader vd
                 end,
                 capabilities = require("cmp_nvim_lsp").default_capabilities(),
             })
 
-            require('mason-lspconfig').setup({
+            require("mason-lspconfig").setup({
                 automatic_installation = false,
                 ensure_installed = { "lua_ls" },
                 handlers = {
                     -- this first function is the "default handler"
                     -- it applies to every language server without a "custom handler"
                     function(server_name)
-                        require('lspconfig')[server_name].setup({})
+                        require("lspconfig")[server_name].setup({})
                     end,
                 },
             })
