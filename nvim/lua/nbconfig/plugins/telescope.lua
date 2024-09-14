@@ -25,7 +25,6 @@ return {
         },
         opts = {
             defaults = {
-                initial_mode = "normal",
                 file_ignore_patterns = { "%.git/" },
             },
         },
