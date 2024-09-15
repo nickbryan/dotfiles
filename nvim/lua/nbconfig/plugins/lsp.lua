@@ -16,6 +16,7 @@ return {
             { url = "https://github.com/hrsh7th/cmp-path" },
             { url = "https://github.com/hrsh7th/cmp-buffer" },
             { url = "https://github.com/hrsh7th/cmp-nvim-lsp" },
+            { url = "https://github.com/hrsh7th/cmp-nvim-lsp-signature-help" },
         },
         event = "InsertEnter",
         config = function()
@@ -25,6 +26,7 @@ return {
                     { name = "path" },
                     { name = "nvim_lsp" },
                     { name = "buffer" },
+                    { name = "nvim_lsp_signature_help" },
                 },
                 snippet = {
                     expand = function(args)
