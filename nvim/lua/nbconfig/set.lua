@@ -26,6 +26,7 @@ vim.opt.tabstop = 4
 -- UI
 vim.opt.colorcolumn = "120"
 vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
+vim.opt.showmode = false
 vim.opt.signcolumn = "yes"
 vim.opt.termguicolors = true
 vim.opt.updatetime = 100
