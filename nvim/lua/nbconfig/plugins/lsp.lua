@@ -1,7 +1,6 @@
 return {
     {
         url = "https://github.com/williamboman/mason.nvim",
-        tag = "v1.10.0",
         config = true,
     },
     {
@@ -11,7 +10,6 @@ return {
     },
     {
         url = "https://github.com/hrsh7th/nvim-cmp",
-        branch = "main", -- Convert this to a tag/release version one day.
         dependencies = {
             { url = "https://github.com/hrsh7th/cmp-path" },
             { url = "https://github.com/hrsh7th/cmp-buffer" },
@@ -59,7 +57,6 @@ return {
     },
     {
         url = "https://github.com/neovim/nvim-lspconfig",
-        tag = "v1.0.0",
         dependencies = {
             { url = "https://github.com/hrsh7th/cmp-nvim-lsp" },
             { url = "https://github.com/williamboman/mason.nvim" },

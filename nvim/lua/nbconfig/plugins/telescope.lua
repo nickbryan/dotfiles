@@ -1,7 +1,6 @@
 return {
     {
         url = "https://github.com/nvim-telescope/telescope.nvim",
-        tag = "0.1.8",
         dependencies = {
             {
                 url = "https://github.com/nvim-lua/plenary.nvim",
