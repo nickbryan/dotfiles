@@ -92,7 +92,7 @@ return {
 
             require("mason-lspconfig").setup({
                 automatic_installation = false,
-                ensure_installed = { "lua_ls" },
+                ensure_installed = { "gopls", "lua_ls" },
                 handlers = {
                     -- this first function is the "default handler"
                     -- it applies to every language server without a "custom handler"
