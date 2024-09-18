@@ -19,6 +19,10 @@ return {
         event = "InsertEnter",
         config = function()
             local cmp = require("cmp")
+            local types = require("cmp.types")
+
+            local select_behaviour = { behavior = types.cmp.SelectBehavior.Select }
+
             cmp.setup({
                 sources = {
                     { name = "path" },
@@ -34,7 +38,28 @@ return {
                     end,
                 },
                 mapping = cmp.mapping.preset.insert({
-                    -- TODO: custom key mappings.
+                    ["<C-y>"] = { i = cmp.mapping.confirm({ select = true }) },
+                    ["<C-e>"] = { i = cmp.mapping.abort() },
+                    ["<C-f>"] = { i = cmp.mapping.scroll_docs(4) },
+                    ["<C-d>"] = { i = cmp.mapping.scroll_docs(-4) },
+                    ["<C-n>"] = {
+                        i = function()
+                            if cmp.visible() then
+                                cmp.select_next_item(select_behaviour)
+                            else
+                                cmp.complete()
+                            end
+                        end,
+                    },
+                    ["<C-p>"] = {
+                        i = function()
+                            if cmp.visible() then
+                                cmp.select_prev_item(select_behaviour)
+                            else
+                                cmp.complete()
+                            end
+                        end,
+                    },
                 }),
                 -- TODO: use formatting function to show source https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
             })
