@@ -1,6 +1,9 @@
 return {
     url = "https://github.com/nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
+    dependencies = {
+        url = "https://github.com/nvim-treesitter/nvim-treesitter-context",
+    },
     config = function()
         require("nvim-treesitter.configs").setup({
             highlight = { enable = true },
