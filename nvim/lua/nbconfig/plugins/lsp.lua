@@ -15,13 +15,24 @@ return {
             { url = "https://github.com/hrsh7th/cmp-buffer" },
             { url = "https://github.com/hrsh7th/cmp-nvim-lsp" },
             { url = "https://github.com/hrsh7th/cmp-nvim-lsp-signature-help" },
+            {
+                url = "https://github.com/L3MON4D3/LuaSnip",
+                version = "v2.*",
+                dependencies = { url = "https://github.com/rafamadriz/friendly-snippets" },
+                build = "make install_jsregexp",
+                config = function() require("luasnip.loaders.from_vscode").lazy_load() end,
+            },
+            { url = "https://github.com/saadparwaiz1/cmp_luasnip" },
         },
         event = "InsertEnter",
         config = function()
             local cmp = require("cmp")
             local types = require("cmp.types")
+            local luasnip = require("luasnip")
+            local cmp_format = require("lsp-zero").cmp_format({ details = true })
 
-            local select_behaviour = { behavior = types.cmp.SelectBehavior.Select }
+            local select_ops = { behavior = types.cmp.SelectBehavior.Select }
+            local confirm_opts = { select = true }
 
             cmp.setup({
                 sources = {
@@ -29,39 +40,60 @@ return {
                     { name = "nvim_lsp" },
                     { name = "buffer" },
                     { name = "nvim_lsp_signature_help" },
+                    { name = "luasnip" },
                 },
                 snippet = {
                     expand = function(args)
-                        -- TODO: Should I use luasnip? What is this actually doing?
-                        -- This is the default so I can remove it (confirmed) if I don"t use a different engine.
-                        vim.snippet.expand(args.body)
+                        luasnip.lsp_expand(args.body)
                     end,
                 },
                 mapping = cmp.mapping.preset.insert({
-                    ["<C-y>"] = { i = cmp.mapping.confirm({ select = true }) },
-                    ["<C-e>"] = { i = cmp.mapping.abort() },
-                    ["<C-f>"] = { i = cmp.mapping.scroll_docs(4) },
-                    ["<C-d>"] = { i = cmp.mapping.scroll_docs(-4) },
-                    ["<C-n>"] = {
-                        i = function()
-                            if cmp.visible() then
-                                cmp.select_next_item(select_behaviour)
-                            else
-                                cmp.complete()
-                            end
-                        end,
-                    },
-                    ["<C-p>"] = {
-                        i = function()
-                            if cmp.visible() then
-                                cmp.select_prev_item(select_behaviour)
-                            else
-                                cmp.complete()
-                            end
-                        end,
-                    },
+                    ["<C-y>"] = cmp.mapping.confirm(confirm_opts),
+                    ["<C-e>"] = cmp.mapping.abort(),
+                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
+                    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+                    ["<C-n>"] = cmp.mapping(function(_)
+                        if cmp.visible() then
+                            cmp.select_next_item(select_ops)
+                        else
+                            cmp.complete()
+                        end
+                    end),
+                    ["<C-p>"] = cmp.mapping(function(_)
+                        if cmp.visible() then
+                            cmp.select_prev_item(select_ops)
+                        else
+                            cmp.complete()
+                        end
+                    end),
+                    ["<Tab>"] = cmp.mapping(function(fallback)
+                        local col = vim.fn.col(".") - 1
+
+                        if cmp.visible() then
+                            cmp.confirm(confirm_opts)
+                        elseif luasnip.expand_or_locally_jumpable() then
+                            luasnip.expand_or_jump()
+                        elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
+                            fallback()
+                        else
+                            cmp.complete()
+                        end
+                    end, { "i", "s" }),
+                    ["<S-Tab>"] = cmp.mapping(function(fallback)
+                        if luasnip.locally_jumpable(-1) then
+                            luasnip.jump(-1)
+                        else
+                            fallback()
+                        end
+                    end, { "i", "s" }),
                 }),
-                -- TODO: use formatting function to show source https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance
+                preselect = cmp.PreselectMode.Item,
+                completion = { completeopt = "menu,menuone,noinsert" },
+                formatting = cmp_format,
+                window = {
+                    completion = cmp.config.window.bordered(),
+                    documentation = cmp.config.window.bordered(),
+                },
             })
         end,
     },
