@@ -38,9 +38,9 @@ return {
                 sources = {
                     { name = "path" },
                     { name = "nvim_lsp" },
+                    { name = "luasnip" },
                     { name = "buffer" },
                     { name = "nvim_lsp_signature_help" },
-                    { name = "luasnip" },
                 },
                 snippet = {
                     expand = function(args)
@@ -87,7 +87,7 @@ return {
                         end
                     end, { "i", "s" }),
                 }),
-                preselect = cmp.PreselectMode.Item,
+                preselect = cmp.PreselectMode.None,
                 completion = { completeopt = "menu,menuone,noinsert" },
                 formatting = cmp_format,
                 window = {
