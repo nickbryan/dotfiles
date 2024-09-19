@@ -102,6 +102,7 @@ export EDITOR='nvim'
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+alias nv="nvim ."
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
