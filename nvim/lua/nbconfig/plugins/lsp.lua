@@ -130,8 +130,6 @@ return {
                 lsp_attach = function(_, bufnr)
                     local opts = { buffer = bufnr }
 
-                    lsp_zero.buffer_autoformat()
-
                     vim.keymap.set("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", opts)
                     vim.keymap.set("n", "gd", "<cmd>lua vim.lsp.buf.definition()<cr>", opts)
                     vim.keymap.set("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<cr>", opts)
@@ -149,7 +147,7 @@ return {
 
             require("mason-lspconfig").setup({
                 automatic_installation = false,
-                ensure_installed = { "gopls", "lua_ls" },
+                ensure_installed = { "biome", "gopls", "lua_ls", "tailwindcss", "ts_ls" },
                 handlers = {
                     -- this first function is the "default handler"
                     -- it applies to every language server without a "custom handler"
@@ -157,6 +155,26 @@ return {
                         require("lspconfig")[server_name].setup({})
                     end,
                 },
+            })
+
+            lsp_zero.format_on_save({
+                servers = {
+                    ["biome"] = {
+                        "javascript",
+                        "javascriptreact",
+                        "json",
+                        "jsonc",
+                        "typescript",
+                        "typescript.tsx",
+                        "typescriptreact",
+                        "astro",
+                        "svelte",
+                        "vue",
+                        "css",
+                    },
+                    ["gopls"] = { "go", "gomod", "gowork", "gotmpl" },
+                    ["lua_ls"] = { "lua" },
+                }
             })
         end,
     },
