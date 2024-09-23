@@ -32,7 +32,6 @@ return {
             local cmp_format = require("lsp-zero").cmp_format({ details = true })
 
             local select_ops = { behavior = types.cmp.SelectBehavior.Select }
-            local confirm_opts = { select = true }
 
             cmp.setup({
                 sources = {
@@ -48,29 +47,28 @@ return {
                     end,
                 },
                 mapping = cmp.mapping.preset.insert({
-                    ["<C-y>"] = cmp.mapping.confirm(confirm_opts),
-                    ["<C-e>"] = cmp.mapping.abort(),
-                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
+                    ["<C-y>"] = cmp.mapping(cmp.mapping.confirm({ select = true }), { "i", "s" }),
+                    ["<C-e>"] = cmp.mapping(cmp.mapping.abort(), { "i", "s" }),
+                    ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "s" }),
+                    ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4, { "i", "s" })),
                     ["<C-n>"] = cmp.mapping(function(_)
                         if cmp.visible() then
                             cmp.select_next_item(select_ops)
                         else
                             cmp.complete()
                         end
-                    end),
+                    end, { "i", "s" }),
                     ["<C-p>"] = cmp.mapping(function(_)
                         if cmp.visible() then
                             cmp.select_prev_item(select_ops)
                         else
                             cmp.complete()
                         end
-                    end),
+                    end, { "i", "s" }),
                     ["<Tab>"] = cmp.mapping(function(fallback)
                         local col = vim.fn.col(".") - 1
-
                         if cmp.visible() then
-                            cmp.confirm(confirm_opts)
+                            cmp.select_next_item(select_ops)
                         elseif luasnip.expand_or_locally_jumpable() then
                             luasnip.expand_or_jump()
                         elseif col == 0 or vim.fn.getline("."):sub(col, col):match("%s") then
@@ -80,15 +78,18 @@ return {
                         end
                     end, { "i", "s" }),
                     ["<S-Tab>"] = cmp.mapping(function(fallback)
-                        if luasnip.locally_jumpable(-1) then
+                        if cmp.visible() then
+                            cmp.select_prev_item(select_ops)
+                        elseif luasnip.locally_jumpable(-1) then
                             luasnip.jump(-1)
                         else
                             fallback()
                         end
                     end, { "i", "s" }),
+                    ["<CR>"] = cmp.mapping(cmp.mapping.confirm({ select = false }), { "i", "s" }),
                 }),
                 preselect = cmp.PreselectMode.None,
-                completion = { completeopt = "menu,menuone,noinsert" },
+                completion = { completeopt = "menu,menuone,noinsert,noselect,preview" },
                 formatting = cmp_format,
                 window = {
                     completion = cmp.config.window.bordered(),
