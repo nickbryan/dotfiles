@@ -13,7 +13,7 @@ vim.keymap.set("n", "Q", "<Nop>", { noremap = true }) -- Ex Mode
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, desc = "Exit insert mode" })
 
 -- File and buffer navigation
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex, { desc = "Project view - netrw" })
+vim.keymap.set("n", "<leader>pv", vim.cmd.Rex, { desc = "Project view - netrw" })
 vim.keymap.set("n", "<Left>", ":bp<CR>", { noremap = true, desc = "Previous buffer" })
 vim.keymap.set("n", "<Right>", ":bn<CR>", { noremap = true, desc = "Next buffer" })
 
