@@ -148,7 +148,7 @@ return {
 
             require("mason-lspconfig").setup({
                 automatic_installation = false,
-                ensure_installed = { "biome", "gopls", "lua_ls", "tailwindcss", "ts_ls" },
+                ensure_installed = { "biome", "gopls", "harper_ls", "lua_ls", "tailwindcss", "ts_ls" },
                 handlers = {
                     -- this first function is the "default handler"
                     -- it applies to every language server without a "custom handler"
