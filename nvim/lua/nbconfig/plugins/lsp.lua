@@ -155,6 +155,15 @@ return {
                     function(server_name)
                         require("lspconfig")[server_name].setup({})
                     end,
+                    gopls = function()
+                        require("lspconfig").gopls.setup({
+                            settings = {
+                                gopls = {
+                                    buildFlags = { "-tags=unit,integration" }
+                                }
+                            }
+                        })
+                    end,
                 },
             })
 
