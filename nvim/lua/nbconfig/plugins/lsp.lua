@@ -125,7 +125,6 @@ return {
         config = function()
             local lsp_zero = require("lsp-zero")
 
-            -- TODO: preoperly configure all of this
             lsp_zero.extend_lspconfig({
                 sign_text = true,
                 lsp_attach = function(_, bufnr)
@@ -150,7 +149,7 @@ return {
                 automatic_installation = false,
                 ensure_installed = { "biome", "gopls", "harper_ls", "lua_ls", "tailwindcss", "ts_ls" },
                 handlers = {
-                    -- this first function is the "default handler"
+                    -- This first function is the "default handler"
                     -- it applies to every language server without a "custom handler"
                     function(server_name)
                         require("lspconfig")[server_name].setup({})
