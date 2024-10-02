@@ -187,4 +187,28 @@ return {
             })
         end,
     },
+    {
+        url = "https://github.com/mfussenegger/nvim-lint",
+        dependencies = {
+            { url = "https://github.com/williamboman/mason.nvim" },
+            { url = "https://github.com/rshkarin/mason-nvim-lint" },
+        },
+        events = { "BufWritePost", "BufReadPost", "InsertLeave" },
+        config = function()
+            local lint = require("lint")
+            lint.linters_by_ft = {
+                go = { "golangcilint" },
+            }
+            vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+                group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
+                callback = function()
+                    lint.try_lint()
+                end,
+            })
+            require("mason-nvim-lint").setup({
+                ensure_installed = { "golangci-lint" },
+                automatic_installation = false,
+            })
+        end,
+    },
 }
