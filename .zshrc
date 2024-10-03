@@ -106,6 +106,7 @@ alias nv="nvim ."
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+export HOMEBREW_BUNDLE_FILE=~/.dotfiles/brew/Brewfile
 export GOPATH=~/go
 export GOPRIVATE=gitlab.com/nickbryan/recipist
 export PATH=$PATH:~/go/bin:$GOPATH/bin
