@@ -14,9 +14,7 @@ vim.opt.modeline = false
 vim.g.netrw_liststyle = 3
 vim.g.netrw_winsize = 30
 vim.g.netrw_preview = 1
-vim.g.netrw_localmkdir = "mkdir -p"
-vim.g.netrw_localcopycmd = "cp -R"
-vim.g.netrw_localrmdir = "rm -r"
+vim.g.netrw_localmkdiropt = " -p"
 vim.g.netrw_list_hide = ".DS_Store,.git/"
 
 -- Search
