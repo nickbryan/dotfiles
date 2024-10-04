@@ -2,7 +2,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
--- Disable Bindings
+-- Disable bindings
 vim.keymap.set({ "n", "i" }, "<Up>", "<Nop>", { noremap = true })
 vim.keymap.set({ "n", "i" }, "<Down>", "<Nop>", { noremap = true })
 vim.keymap.set({ "n", "i" }, "<Left>", "<Nop>", { noremap = true })
@@ -12,7 +12,7 @@ vim.keymap.set("n", "Q", "<Nop>", { noremap = true }) -- Ex Mode
 -- Exit insert mode
 vim.keymap.set("i", "jj", "<Esc>", { noremap = true, desc = "Exit insert mode" })
 
--- File and buffer navigation
+-- File/buffer navigation
 vim.keymap.set("n", "<leader>pv", vim.cmd.Rex, { desc = "Project view - netrw" })
 vim.keymap.set("n", "<Left>", ":bp<CR>", { noremap = true, desc = "Previous buffer" })
 vim.keymap.set("n", "<Right>", ":bn<CR>", { noremap = true, desc = "Next buffer" })
@@ -31,6 +31,10 @@ vim.keymap.set("n", "N", "Nzz", { noremap = true, silent = true })
 vim.keymap.set("n", "*", "*zz", { noremap = true, silent = true })
 vim.keymap.set("n", "#", "#zz", { noremap = true, silent = true })
 vim.keymap.set("n", "g*", "g*zz", { noremap = true, silent = true })
+
+-- Shortcuts
+vim.keymap.set("n", "<leader>vl", ":Lazy<CR>", { noremap = true, desc = "Open Lazy" })
+vim.keymap.set("n", "<leader>vm", ":Mason<CR>", { noremap = true, desc = "Open Mason" })
 
 -- Quick save
 vim.keymap.set("n", "<leader>w", ":w<CR>", { noremap = true, desc = "Write the current buffer to disk" })
