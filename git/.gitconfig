@@ -1,0 +1,24 @@
+[commit]
+    gpgsign = true
+[diff]
+    tool = nvimdiff
+[difftool]
+    prompt = false
+[core]
+    editor = nvim
+    excludesfile = ~/.dotfiles/git/.gitignore_global
+[init]
+    defaultBranch = main
+[merge]
+    tool = nvimdiff
+[mergetool]
+    keepBackup = false
+    prompt = false
+    writeToTemp = true
+[pull]
+    rebase = true
+[user]
+	email = nickbryan.dev@gmail.com
+	name = Nick Bryan
+[tag]
+    gpgsign = true

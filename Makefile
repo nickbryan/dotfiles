@@ -38,6 +38,10 @@ guard-%:
 help:
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
+## @Git: Create .gitconfig.
+git-config:
+	cp git/base.gitconfig ~/.gitconfig
+
 ## @iTerm2: Export iTerm2 settings.
 iterm-export:
 	defaults export com.googlecode.iterm2 iterm/com.googlecode.iterm2

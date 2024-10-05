@@ -120,3 +120,5 @@ export GOPATH=~/go
 export GOPRIVATE=gitlab.com/nickbryan/recipist
 export PATH=$PATH:~/go/bin:$GOPATH/bin
 export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export GPG_TTY=$(tty) 
+gpgconf --launch gpg-agent
