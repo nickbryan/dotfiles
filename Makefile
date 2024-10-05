@@ -2,9 +2,11 @@
 
 # Colours used in help
 RESET    := $(shell tput -Txterm sgr0)
+RED      := $(shell tput -Txterm setaf 1)
 GREEN    := $(shell tput -Txterm setaf 2)
 YELLOW   := $(shell tput -Txterm setaf 3)
 WHITE    := $(shell tput -Txterm setaf 7)
+
 HELP_FUN = \
 	%help; \
     local $$/; \
@@ -40,7 +42,12 @@ help:
 
 ## @Git: Create .gitconfig.
 git-config:
-	cp git/base.gitconfig ~/.gitconfig
+	@if cp -n git/base.gitconfig ~/.gitconfig; then \
+		echo "${RED}Don't forget to setup user details if they differ from personal.${RESET}"; \
+		echo "${RED}Don't forget to setup gpg keys locally and add to remote VCS.${RESET}"; \
+	else \
+		echo "${RED}~/.gitconfig already exists!"; \
+	fi
 
 ## @iTerm2: Export iTerm2 settings.
 iterm-export:
