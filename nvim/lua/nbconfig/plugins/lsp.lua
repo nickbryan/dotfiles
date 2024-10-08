@@ -196,6 +196,10 @@ return {
         events = { "BufWritePost", "BufReadPost", "InsertLeave" },
         config = function()
             local lint = require("lint")
+            lint.linters.golangcilint.args = vim.list_extend(
+                lint.linters.golangcilint.args,
+                { "--build-tags=unit,integration" }
+            )
             lint.linters_by_ft = {
                 go = { "golangcilint" },
             }
