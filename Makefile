@@ -56,3 +56,7 @@ iterm-export:
 ## @iTerm2: Import iTerm2 settings.
 iterm-import:
 	defaults import com.googlecode.iterm2 iterm/com.googlecode.iterm2
+
+## @zsh: Link .zshrc which will auto install omz on next source.
+zsh:
+	ln -s ~/.dotfiles/.zshrc ~/.zshrc
