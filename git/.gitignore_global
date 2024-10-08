@@ -1,2 +1,9 @@
+# Filesystem
 .DS_Store
+
+# IDE
 .idea/
+
+# Go
+cover.cov
+coverage.out
