@@ -1,3 +1,6 @@
+# dotfiles
+.zshrc_local
+
 # Filesystem
 .DS_Store
 
