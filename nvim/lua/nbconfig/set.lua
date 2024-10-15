@@ -6,6 +6,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.scrolloff = 4
 vim.opt.wrap = false
+vim.opt.cursorline = true
 
 -- Modeline
 vim.opt.modeline = false
@@ -16,6 +17,8 @@ vim.g.netrw_winsize = 30
 vim.g.netrw_preview = 1
 vim.g.netrw_localmkdiropt = " -p"
 vim.g.netrw_list_hide = ".DS_Store,.git/"
+vim.g.netrw_bufsettings = "noma nomod nu nowrap ro nobl"
+vim.g.netrw_cursor = 0
 
 -- Search
 vim.opt.ignorecase = true
