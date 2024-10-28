@@ -29,6 +29,7 @@ return {
                 "javascript",
                 "json",
                 "lua",
+                "make",
                 "markdown",
                 "markdown_inline",
                 "regex",
