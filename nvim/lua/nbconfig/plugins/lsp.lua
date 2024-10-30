@@ -215,4 +215,9 @@ return {
             })
         end,
     },
+    {
+        url = "https://github.com/rachartier/tiny-inline-diagnostic.nvim",
+        event = "LspAttach",
+        config = true,
+    },
 }

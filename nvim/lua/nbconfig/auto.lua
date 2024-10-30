@@ -23,3 +23,13 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         end
     end,
 })
+
+-- Disable diagnostics when opening a file (netrw seems to enable it again when used),
+-- so the plugin can take over for showing long diagnostic lines.
+vim.api.nvim_create_autocmd("BufReadPost", {
+    group = group,
+    pattern = { "*" },
+    callback = function()
+        vim.diagnostic.config({ virtual_text = false })
+    end,
+})
