@@ -158,7 +158,8 @@ return {
                         require("lspconfig").gopls.setup({
                             settings = {
                                 gopls = {
-                                    buildFlags = { "-tags=unit,integration" }
+                                    buildFlags = { "-tags=unit,integration" },
+                                    gofumpt = true,
                                 }
                             }
                         })
