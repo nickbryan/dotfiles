@@ -7,8 +7,8 @@ fi
 ZSH_THEME="gnzh"
 
 # Update omz automatically without asking.
-zstyle ':omz:update' mode auto      
-zstyle ':omz:update' frequency 1
+zstyle ":omz:update" mode auto      
+zstyle ":omz:update" frequency 1
 
 # OMZ plugins, don't add too many as it slows down shell startup.
 plugins=(git history-substring-search)
@@ -18,10 +18,11 @@ source $ZSH/oh-my-zsh.sh
 
 export LANG=en_GB.UTF-8
 
-export EDITOR='nvim'
+export EDITOR="nvim"
 
 # Personal aliases.
-alias ll='gls -lAh --color --group-directories-first'
+alias ll="gls -lAh --color --group-directories-first"
+alias "cd."="cd ~/.dotfiles" 
 function nv() {
     if [ "$1" != "" ]
     then
