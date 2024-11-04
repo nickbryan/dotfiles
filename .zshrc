@@ -11,7 +11,7 @@ zstyle ":omz:update" mode auto
 zstyle ":omz:update" frequency 1
 
 # OMZ plugins, don't add too many as it slows down shell startup.
-plugins=(git history-substring-search)
+plugins=(aliases git history-substring-search macos safe-paste rust web-search)
 
 export FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 source $ZSH/oh-my-zsh.sh
