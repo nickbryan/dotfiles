@@ -1,6 +1,7 @@
 tap "homebrew/bundle"
 
 brew "bat"
+brew "blackhole-2ch"
 brew "coreutils"
 brew "fd"
 brew "fzf"
