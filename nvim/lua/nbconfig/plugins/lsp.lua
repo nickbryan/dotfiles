@@ -161,7 +161,17 @@ return {
                                     buildFlags = { "-tags=unit,integration" },
                                     gofumpt = true,
                                 }
-                            }
+                            },
+                        })
+                    end,
+                    harper_ls = function()
+                        require("lspconfig").harper_ls.setup({
+                            settings = {
+                                ["harper-ls"] = {
+                                    userDictPath = "~/.dotfiles/harper/dict.txt",
+                                    fileDictPath = "~/.dotfiles/harper/file_dictionaries/",
+                                }
+                            },
                         })
                     end,
                 },
