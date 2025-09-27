@@ -221,7 +221,7 @@ return {
                 end,
             })
             require("mason-nvim-lint").setup({
-                ensure_installed = { "golangci-lint" },
+                ensure_installed = { "golangcilint" },
                 automatic_installation = false,
             })
         end,

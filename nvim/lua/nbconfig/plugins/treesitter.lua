@@ -36,6 +36,7 @@ return {
                 "rust",
                 "sql",
                 "ssh_config",
+                "templ",
                 "typescript",
                 "toml",
                 "vim",
