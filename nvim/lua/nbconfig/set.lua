@@ -39,7 +39,7 @@ vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCurs
 vim.opt.showmode = false
 vim.opt.signcolumn = "yes"
 vim.opt.termguicolors = true
-vim.opt.updatetime = 100
+vim.opt.updatetime = 300
 vim.opt.visualbell = true
 
 -- Undo

@@ -1,4 +1,5 @@
 return {
+    -- TODO: update to use main branch, it's a complete rewrite!
     url = "https://github.com/nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     dependencies = {
