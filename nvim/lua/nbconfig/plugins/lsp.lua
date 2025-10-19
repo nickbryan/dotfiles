@@ -45,6 +45,8 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = { "biome", "gopls", "harper_ls", "lua_ls", "rust_analyzer", "tailwindcss", "ts_ls" },
             })
+
+            require("fzf-lua").register_ui_select();
         end,
     },
     {
