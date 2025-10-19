@@ -33,3 +33,16 @@ vim.api.nvim_create_autocmd("BufEnter", {
         vim.diagnostic.config({ virtual_text = false })
     end,
 })
+
+-- Format on save with LSP.
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = group,
+  callback = function(args)
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      buffer = args.buf,
+      callback = function()
+        vim.lsp.buf.format({ async = false, id = args.data.client_id })
+      end,
+    })
+  end,
+})
