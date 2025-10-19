@@ -1,3 +1,10 @@
+-- Diagnostics
+vim.diagnostic.config({
+    virtual_lines = {
+        current_line = true,
+    },
+})
+
 -- Encoding
 vim.opt.fileencoding = "utf-8"
 
@@ -41,6 +48,7 @@ vim.opt.signcolumn = "yes"
 vim.opt.termguicolors = true
 vim.opt.updatetime = 300
 vim.opt.visualbell = true
+vim.o.winborder = "rounded"
 
 -- Undo
 vim.opt.undofile = true
