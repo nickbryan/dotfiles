@@ -9,7 +9,11 @@ return {
     },
     {
         url = "https://github.com/j-hui/fidget.nvim",
-        config = true,
+        opts = {
+            notification = {
+                override_vim_notify = true,
+            },
+        },
     },
     {
         url = "https://github.com/nvim-lualine/lualine.nvim",
