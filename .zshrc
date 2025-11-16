@@ -48,3 +48,6 @@ gpgconf --launch gpg-agent
 
 # Local exports etc.
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
+
+# Python
+export PATH="$(brew --prefix python)/libexec/bin:$PATH"
