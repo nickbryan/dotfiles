@@ -4,7 +4,7 @@ if [ ! -d ~/.oh-my-zsh ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --keep-zshrc
 fi
 
-ZSH_THEME="gnzh"
+ZSH_THEME="gnzh" # set by `omz`
 
 # Update omz automatically without asking.
 zstyle ":omz:update" mode auto      
@@ -21,8 +21,10 @@ export LANG=en_GB.UTF-8
 export EDITOR="nvim"
 
 # Personal aliases.
-alias ll="gls -lAh --color --group-directories-first"
 alias "cd."="cd ~/.dotfiles" 
+alias ls="eza --icons=auto --git --git-repos"
+alias ll="ls -lAh --color --group-directories-first"
+alias cat="bat"
 function nv() {
     if [ "$1" != "" ]
     then
@@ -31,6 +33,7 @@ function nv() {
         nvim .
     fi
 }
+alias tree="ls --tree"
 
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -46,8 +49,8 @@ export PATH=$PATH:~/go/bin:$GOPATH/bin
 export GPG_TTY=$(tty) 
 gpgconf --launch gpg-agent
 
-# Local exports etc.
-[ -f ~/.zshrc_local ] && source ~/.zshrc_local
-
 # Python
 export PATH="$(brew --prefix python)/libexec/bin:$PATH"
+
+# Local exports etc.
+[ -f ~/.zshrc_local ] && source ~/.zshrc_local
