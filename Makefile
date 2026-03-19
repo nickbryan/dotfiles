@@ -1,3 +1,5 @@
+.PHONY: zsh
+
 .DEFAULT_GOAL := help
 
 # Colours used in help
