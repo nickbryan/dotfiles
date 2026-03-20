@@ -9,6 +9,7 @@ return {
     },
     {
         url = "https://github.com/j-hui/fidget.nvim",
+        event = "LspAttach",
         opts = {
             notification = {
                 override_vim_notify = true,
@@ -17,6 +18,7 @@ return {
     },
     {
         url = "https://github.com/nvim-lualine/lualine.nvim",
+        event = "VeryLazy",
         dependencies = { url = "https://github.com/nvim-tree/nvim-web-devicons" },
         opts = {
             sections = {
@@ -40,6 +42,7 @@ return {
     {
         url = "https://github.com/prichrd/netrw.nvim",
         dependencies = { url = "https://github.com/nvim-tree/nvim-web-devicons" },
+        ft = "netrw",
         config = true,
     },
 }

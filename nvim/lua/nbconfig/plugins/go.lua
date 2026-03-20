@@ -4,7 +4,6 @@ return {
         { url = "https://github.com/neovim/nvim-lspconfig" },
         { url = "https://github.com/nvim-treesitter/nvim-treesitter" },
     },
-    event = { "CmdlineEnter" },
     ft = { "go", "gomod" },
     config = true,
 }

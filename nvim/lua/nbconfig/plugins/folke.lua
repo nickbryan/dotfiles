@@ -18,7 +18,7 @@ return {
     {
         url = "https://github.com/folke/snacks.nvim",
         priority = 1000,
-        lazy = false,
+        event = "VeryLazy",
         opts = {
             bigfile = { enabled = true },
             indent = { enabled = true },

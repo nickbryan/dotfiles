@@ -2,6 +2,7 @@ return {
     {
         url = "https://github.com/saghen/blink.cmp",
         version = "1.*",
+        event = { "InsertEnter", "CmdlineEnter" },
         dependencies = {
             {
                 url = "https://github.com/L3MON4D3/LuaSnip",
@@ -19,6 +20,7 @@ return {
     },
     {
         url = "https://github.com/williamboman/mason-lspconfig.nvim",
+        event = { "BufReadPost", "BufNewFile" },
         dependencies = {
             { url = "https://github.com/williamboman/mason.nvim", opts = {} },
             { url = "https://github.com/neovim/nvim-lspconfig" },
@@ -71,6 +73,8 @@ return {
                     lint.try_lint()
                 end,
             })
+            -- Run lint on the initial load event that triggered this plugin
+            lint.try_lint()
             require("mason-nvim-lint").setup({
                 ensure_installed = { "golangcilint" },
                 automatic_installation = false,
