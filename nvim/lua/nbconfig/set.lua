@@ -1,8 +1,7 @@
 -- Diagnostics
 vim.diagnostic.config({
-    virtual_lines = {
-        current_line = true,
-    },
+    virtual_lines = { current_line = true },
+    virtual_text = false,
 })
 
 -- Encoding
@@ -11,7 +10,7 @@ vim.opt.fileencoding = "utf-8"
 -- Lines
 vim.opt.number = true
 vim.opt.relativenumber = true
-vim.opt.scrolloff = 4
+vim.opt.scrolloff = 8
 vim.opt.wrap = false
 vim.opt.cursorline = true
 
@@ -46,7 +45,7 @@ vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCurs
 vim.opt.showmode = false
 vim.opt.signcolumn = "yes"
 vim.opt.termguicolors = true
-vim.opt.timeoutlen = 200
+vim.opt.timeoutlen = 300
 vim.opt.updatetime = 200
 vim.opt.visualbell = true
 vim.o.winborder = "rounded"

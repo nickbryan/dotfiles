@@ -24,27 +24,21 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end,
 })
 
--- Disable diagnostics when opening a file (netrw seems to enable it again when used),
--- so the plugin can take over for showing long diagnostic lines.
-vim.api.nvim_create_autocmd("BufEnter", {
-    group = group,
-    pattern = { "*" },
-    callback = function()
-        vim.diagnostic.config({ virtual_text = false })
-    end,
-})
-
 -- Format on save with LSP.
 vim.api.nvim_create_autocmd("LspAttach", {
     group = group,
     callback = function(args)
         local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
-        if client.supports_method("textDocument/formatting", args.buf) then
+        if client:supports_method("textDocument/formatting") then
+            if vim.b[args.buf]._format_on_save then return end
+            vim.b[args.buf]._format_on_save = true
+
             vim.api.nvim_create_autocmd("BufWritePre", {
+                group = group,
                 buffer = args.buf,
                 callback = function()
-                    vim.lsp.buf.format({ async = false, id = args.data.client_id })
+                    vim.lsp.buf.format({ async = false })
                 end,
             })
         end

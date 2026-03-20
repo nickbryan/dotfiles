@@ -55,7 +55,7 @@ return {
             { url = "https://github.com/williamboman/mason.nvim" },
             { url = "https://github.com/rshkarin/mason-nvim-lint" },
         },
-        events = { "BufWritePost", "BufReadPost", "InsertLeave" },
+        event = { "BufWritePost", "BufReadPost", "InsertLeave" },
         config = function()
             local lint = require("lint")
             lint.linters.golangcilint.args = vim.list_extend(

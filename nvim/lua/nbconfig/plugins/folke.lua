@@ -1,6 +1,6 @@
 return {
     {
-        "folke/which-key.nvim",
+        url = "https://github.com/folke/which-key.nvim",
         event = "VeryLazy",
         opts = {
             preset = "helix",
@@ -16,7 +16,7 @@ return {
         },
     },
     {
-        "folke/snacks.nvim",
+        url = "https://github.com/folke/snacks.nvim",
         priority = 1000,
         lazy = false,
         opts = {
