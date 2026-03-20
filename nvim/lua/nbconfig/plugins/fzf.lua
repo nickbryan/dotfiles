@@ -11,6 +11,11 @@ return {
         { "<leader>psw",      function() require("fzf-lua").grep_cword() end, mode = "n", noremap = true, desc = "Search for string in project files" },
         { "<leader>e",        function() require("fzf-lua").oldfiles() end,   mode = "n", noremap = true, desc = "Search for previously opened files" },
         { "<leader>vh",       function() require("fzf-lua").helptags() end,   mode = "n", noremap = true, desc = "Vim help tags" },
+        { "<leader>ds",       function() require("fzf-lua").lsp_document_symbols() end,    mode = "n", noremap = true, desc = "Document symbols" },
+        { "<leader>ws",       function() require("fzf-lua").lsp_workspace_symbols() end,   mode = "n", noremap = true, desc = "Workspace symbols" },
+        { "<leader>pd",       function() require("fzf-lua").diagnostics_workspace() end,   mode = "n", noremap = true, desc = "Workspace diagnostics" },
+        { "<leader>pgc",      function() require("fzf-lua").git_commits() end,             mode = "n", noremap = true, desc = "Git commits" },
+        { "<leader>pgs",     function() require("fzf-lua").git_status() end,              mode = "n", noremap = true, desc = "Git status" },
     },
     opts = {
         oldfiles = {
