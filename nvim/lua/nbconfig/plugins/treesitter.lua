@@ -5,7 +5,7 @@ return {
     dependencies = {
         url = "https://github.com/nvim-treesitter/nvim-treesitter-context",
     },
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
         local ensure_installed = {
             "bash",

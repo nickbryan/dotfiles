@@ -20,7 +20,7 @@ return {
     },
     {
         url = "https://github.com/williamboman/mason-lspconfig.nvim",
-        event = { "BufReadPost", "BufNewFile" },
+        event = { "BufReadPre", "BufNewFile" },
         dependencies = {
             { url = "https://github.com/williamboman/mason.nvim", opts = {} },
             { url = "https://github.com/neovim/nvim-lspconfig" },
