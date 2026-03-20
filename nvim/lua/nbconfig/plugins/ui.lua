@@ -8,15 +8,6 @@ return {
         end,
     },
     {
-        url = "https://github.com/j-hui/fidget.nvim",
-        event = "LspAttach",
-        opts = {
-            notification = {
-                override_vim_notify = true,
-            },
-        },
-    },
-    {
         url = "https://github.com/nvim-lualine/lualine.nvim",
         event = "VeryLazy",
         dependencies = { url = "https://github.com/nvim-tree/nvim-web-devicons" },
