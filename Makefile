@@ -1,4 +1,4 @@
-.PHONY: zsh zellij nvim
+.PHONY: zsh zellij nvim brew setup
 
 .DEFAULT_GOAL := help
 
@@ -42,6 +42,9 @@ guard-%:
 help:
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
+## Run all setup targets for a new system.
+setup: zsh git-config brew nvim zellij iterm-import
+
 ## @Git: Create .gitconfig.
 git-config:
 	@if cp -n git/base.gitconfig ~/.gitconfig; then \
@@ -58,6 +61,10 @@ iterm-export:
 ## @iTerm2: Import iTerm2 settings.
 iterm-import:
 	defaults import com.googlecode.iterm2 iterm/com.googlecode.iterm2
+
+## @Homebrew: Link Brewfile.
+brew:
+	ln -s ~/.dotfiles/brew/Brewfile ~/Brewfile
 
 ## @Neovim: Link nvim config directory.
 nvim:
