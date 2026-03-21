@@ -47,8 +47,19 @@ return {
         init = function()
             vim.g.loaded_netrw = 1
             vim.g.loaded_netrwPlugin = 1
+            vim.api.nvim_create_autocmd("BufReadPost", {
+                once = true,
+                callback = function()
+                    vim.schedule(function()
+                        require("neo-tree.command").execute({ action = "show" })
+                    end)
+                end,
+            })
         end,
         opts = {
+            window = {
+                width = 30,
+            },
             close_if_last_window = true,
             filesystem = {
                 hijack_netrw_behavior = "open_current",
