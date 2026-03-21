@@ -1,4 +1,4 @@
-.PHONY: zsh
+.PHONY: zsh zellij nvim
 
 .DEFAULT_GOAL := help
 
@@ -58,6 +58,16 @@ iterm-export:
 ## @iTerm2: Import iTerm2 settings.
 iterm-import:
 	defaults import com.googlecode.iterm2 iterm/com.googlecode.iterm2
+
+## @Neovim: Link nvim config directory.
+nvim:
+	mkdir -p ~/.config
+	ln -s ~/.dotfiles/nvim ~/.config/nvim
+
+## @Zellij: Link zellij config.
+zellij:
+	mkdir -p ~/.config/zellij
+	ln -s ~/.dotfiles/zellij/config.kdl ~/.config/zellij/config.kdl
 
 ## @zsh: Link .zshrc which will auto install omz on next source.
 zsh:

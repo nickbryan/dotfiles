@@ -1,10 +1,10 @@
 return {
     {
-        url = "https://github.com/folke/tokyonight.nvim",
+        url = "https://github.com/edeneast/nightfox.nvim",
         lazy = false,
         priority = 1000,
         config = function()
-            vim.cmd([[colorscheme tokyonight-night]])
+            vim.cmd([[colorscheme nightfox]])
         end,
     },
     {
