@@ -54,3 +54,4 @@ export PATH="$(brew --prefix python)/libexec/bin:$PATH"
 
 # Local exports etc.
 [ -f ~/.zshrc_local ] && source ~/.zshrc_local
+eval "$(zellij setup --generate-auto-start zsh)"

@@ -30,10 +30,10 @@ return {
             words = { enabled = true },
         },
         keys = {
-            { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
-            { "<leader>ba", function() Snacks.bufdelete.all() end, desc = "Delete All Buffers" },
-            { "<leader>bD", function() Snacks.bufdelete.other() end, desc = "Delete Other Buffers" },
-            { "<leader>nh", function() Snacks.notifier.show_history() end, desc = "Notification History" },
+            { "<leader>bd", function() require("snacks").bufdelete() end,             desc = "Delete Buffer" },
+            { "<leader>ba", function() require("snacks").bufdelete.all() end,         desc = "Delete All Buffers" },
+            { "<leader>bD", function() require("snacks").bufdelete.other() end,       desc = "Delete Other Buffers" },
+            { "<leader>nh", function() require("snacks").notifier.show_history() end, desc = "Notification History" },
         },
     }
 }
