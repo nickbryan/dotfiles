@@ -45,11 +45,26 @@ return {
             })
 
             require("mason-lspconfig").setup({
-                ensure_installed = { "biome", "gopls", "harper_ls", "lua_ls", "pyright", "rust_analyzer", "tailwindcss", "ts_ls" },
+                ensure_installed = { "biome", "gopls", "harper_ls", "lua_ls", "marksman", "pyright", "rust_analyzer", "tailwindcss", "ts_ls" },
             })
 
             require("fzf-lua").register_ui_select();
         end,
+    },
+    {
+        url = "https://github.com/stevearc/conform.nvim",
+        event = "BufWritePre",
+        opts = {
+            formatters_by_ft = {
+                markdown = { "markdownlint" },
+            },
+            formatters = {
+                markdownlint = {
+                    prepend_args = { "--disable", "MD013" },
+                },
+            },
+            format_on_save = {},
+        },
     },
     {
         url = "https://github.com/mfussenegger/nvim-lint",
@@ -59,13 +74,22 @@ return {
         },
         event = { "BufWritePost", "BufReadPost", "InsertLeave" },
         config = function()
+            require("mason-nvim-lint").setup({
+                ensure_installed = { "golangcilint", "markdownlint" },
+                automatic_installation = false,
+            })
             local lint = require("lint")
             lint.linters.golangcilint.args = vim.list_extend(
                 lint.linters.golangcilint.args,
                 { "--build-tags=unit,integration" }
             )
+            lint.linters.markdownlint.args = vim.list_extend(
+                lint.linters.markdownlint.args,
+                { "--disable", "MD013", "--" }
+            )
             lint.linters_by_ft = {
                 go = { "golangcilint" },
+                markdown = { "markdownlint" },
             }
             vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
                 group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
@@ -75,10 +99,6 @@ return {
             })
             -- Run lint on the initial load event that triggered this plugin
             lint.try_lint()
-            require("mason-nvim-lint").setup({
-                ensure_installed = { "golangcilint" },
-                automatic_installation = false,
-            })
         end,
     },
 }

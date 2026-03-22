@@ -24,6 +24,17 @@ vim.api.nvim_create_autocmd("BufReadPost", {
     end,
 })
 
+-- Markdown settings
+vim.api.nvim_create_autocmd("FileType", {
+    group = group,
+    pattern = "markdown",
+    callback = function()
+        vim.opt_local.wrap = true
+        vim.opt_local.linebreak = true
+        vim.opt_local.conceallevel = 2
+    end,
+})
+
 -- Format on save with LSP.
 vim.api.nvim_create_autocmd("LspAttach", {
     group = group,
