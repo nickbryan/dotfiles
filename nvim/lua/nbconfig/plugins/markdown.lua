@@ -16,7 +16,7 @@ return {
             },
         },
         keys = {
-            { "<leader>mt", ":RenderMarkdown toggle<CR>", desc = "Toggle render-markdown" },
+            { "<leader>mt", ":RenderMarkdown toggle<CR>", ft = "markdown", desc = "Toggle render-markdown" },
             {
                 "<leader>mc",
                 function()

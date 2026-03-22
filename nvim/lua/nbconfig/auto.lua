@@ -28,10 +28,38 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 vim.api.nvim_create_autocmd("FileType", {
     group = group,
     pattern = "markdown",
-    callback = function()
+    callback = function(args)
         vim.opt_local.wrap = true
         vim.opt_local.linebreak = true
-        vim.opt_local.conceallevel = 2
+
+        -- Heading navigation: ]] next heading, [[ previous heading
+        vim.keymap.set("n", "]]", function()
+            vim.fn.search("^#\\+\\s", "W")
+        end, { buffer = args.buf, desc = "Next markdown heading" })
+        vim.keymap.set("n", "[[", function()
+            vim.fn.search("^#\\+\\s", "bW")
+        end, { buffer = args.buf, desc = "Previous markdown heading" })
+
+        -- Preview with glow in a zellij pane (press q to close)
+        vim.keymap.set("n", "<leader>mp", function()
+            local file = vim.fn.shellescape(vim.fn.expand("%:p"))
+            vim.fn.system("zellij action new-pane -d right -c -- glow -p " .. file)
+        end, { buffer = args.buf, desc = "Preview markdown with glow" })
+
+        -- Open URL under cursor
+        vim.keymap.set("n", "gx", function()
+            local url = vim.fn.expand("<cWORD>")
+            -- Extract URL from markdown link syntax [text](url)
+            local md_url = url:match("%((.+)%)")
+            if md_url then
+                url = md_url
+            end
+            -- Strip surrounding punctuation
+            url = url:match("https?://[%w%-%._~:/?#%[%]@!$&'()*+,;=%%]+")
+            if url then
+                vim.ui.open(url)
+            end
+        end, { buffer = args.buf, desc = "Open URL under cursor" })
     end,
 })
 

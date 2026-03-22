@@ -54,17 +54,23 @@ return {
     {
         url = "https://github.com/stevearc/conform.nvim",
         event = "BufWritePre",
+        dependencies = {
+            { url = "https://github.com/williamboman/mason.nvim" },
+        },
         opts = {
             formatters_by_ft = {
-                markdown = { "markdownlint" },
-            },
-            formatters = {
-                markdownlint = {
-                    prepend_args = { "--disable", "MD013" },
-                },
+                markdown = { "prettier" },
             },
             format_on_save = {},
         },
+    },
+    {
+        url = "https://github.com/zapling/mason-conform.nvim",
+        dependencies = {
+            { url = "https://github.com/williamboman/mason.nvim" },
+            { url = "https://github.com/stevearc/conform.nvim" },
+        },
+        opts = {},
     },
     {
         url = "https://github.com/mfussenegger/nvim-lint",
