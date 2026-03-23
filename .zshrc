@@ -35,6 +35,47 @@ function nv() {
 }
 alias tree="ls --tree"
 
+function qnote() {
+    local month=$(date +%-m)
+    local year=$(date +%Y)
+    local quarter months first_year second_year
+
+    if (( month >= 4 && month <= 6 )); then
+        quarter=1; months="April, May, June"
+        first_year=$year; second_year=$((year + 1))
+    elif (( month >= 7 && month <= 9 )); then
+        quarter=2; months="July, August, September"
+        first_year=$year; second_year=$((year + 1))
+    elif (( month >= 10 && month <= 12 )); then
+        quarter=3; months="October, November, December"
+        first_year=$year; second_year=$((year + 1))
+    else
+        quarter=4; months="January, February, March"
+        first_year=$((year - 1)); second_year=$year
+    fi
+
+    local filename="${first_year}_${second_year}_Q${quarter}.md"
+    local template="$HOME/.dotfiles/templates/quarterly-notes.md"
+
+    if [[ -f "$filename" ]]; then
+        echo "File $filename already exists in the current directory."
+        return 1
+    fi
+
+    if [[ ! -f "$template" ]]; then
+        echo "Template not found: $template"
+        return 1
+    fi
+
+    sed -e "s/{{QUARTER}}/Q${quarter}/g" \
+        -e "s/{{MONTHS}}/${months}/g" \
+        -e "s/{{FIRST_YEAR}}/${first_year}/g" \
+        -e "s/{{SECOND_YEAR}}/${second_year}/g" \
+        "$template" > "$filename"
+
+    echo "Created $filename"
+}
+
 # FZF
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
