@@ -35,7 +35,7 @@ function nv() {
 }
 alias tree="ls --tree"
 
-function qnotes() {
+function notes() {
     local month=$(date +%-m)
     local year=$(date +%Y)
     local quarter months first_year second_year
@@ -54,12 +54,17 @@ function qnotes() {
         first_year=$((year - 1)); second_year=$year
     fi
 
-    local filename="${first_year}_${second_year}_Q${quarter}.md"
+    if [[ -z "$NOTES_DIR" ]]; then
+        echo "NOTES_DIR is not set"
+        return 1
+    fi
+
+    local filename="${NOTES_DIR}/${first_year}_${second_year}_Q${quarter}.md"
     local template="$HOME/.dotfiles/templates/quarterly-notes.md"
 
     if [[ -f "$filename" ]]; then
-        echo "File $filename already exists in the current directory."
-        return 1
+        ${EDITOR:-nvim} "$filename"
+        return
     fi
 
     if [[ ! -f "$template" ]]; then
@@ -74,6 +79,21 @@ function qnotes() {
         "$template" > "$filename"
 
     echo "Created $filename"
+    ${EDITOR:-nvim} "$filename"
+}
+
+function notes-search() {
+    if [[ -z "$NOTES_DIR" ]]; then
+        echo "NOTES_DIR is not set"
+        return 1
+    fi
+
+    rg --line-number --no-heading --color=always "" "$NOTES_DIR" \
+        | fzf --ansi --delimiter=: \
+              --preview 'bat --color=always --highlight-line {2} {1}' \
+              --preview-window='up,60%,+{2}-10' \
+              --query="${1:-}" \
+              --bind 'enter:become(${EDITOR:-nvim} {1} +{2})'
 }
 
 # FZF

@@ -40,6 +40,27 @@ vim.api.nvim_create_autocmd("FileType", {
             vim.fn.search("^#\\+\\s", "bW")
         end, { buffer = args.buf, desc = "Previous markdown heading" })
 
+        -- Outline: fuzzy search headings with fzf-lua
+        vim.keymap.set("n", "<leader>mo", function()
+            local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
+            local headings = {}
+            for i, line in ipairs(lines) do
+                if line:match("^#") then
+                    table.insert(headings, string.format("%d:%s", i, line))
+                end
+            end
+            if #headings == 0 then return end
+            require("fzf-lua").fzf_exec(headings, {
+                prompt = "Headings> ",
+                actions = {
+                    ["default"] = function(selected)
+                        local lnum = tonumber(selected[1]:match("^(%d+):"))
+                        if lnum then vim.api.nvim_win_set_cursor(0, { lnum, 0 }) end
+                    end,
+                },
+            })
+        end, { buffer = args.buf, desc = "Markdown outline" })
+
         -- Preview with glow in a zellij pane (press q to close)
         vim.keymap.set("n", "<leader>mp", function()
             local file = vim.fn.shellescape(vim.fn.expand("%:p"))
