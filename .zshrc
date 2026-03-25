@@ -35,7 +35,7 @@ function nv() {
 }
 alias tree="ls --tree"
 
-function qnote() {
+function qnotes() {
     local month=$(date +%-m)
     local year=$(date +%Y)
     local quarter months first_year second_year
