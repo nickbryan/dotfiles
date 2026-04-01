@@ -11,8 +11,10 @@ return {
                 build = "make install_jsregexp",
                 config = function()
                     require("luasnip.loaders.from_vscode").lazy_load()
-                    require("luasnip.loaders.from_lua").lazy_load({ paths = vim.fn.stdpath("config") ..
-                    "/lua/nbconfig/snippets" })
+                    require("luasnip.loaders.from_lua").lazy_load({
+                        paths = vim.fn.stdpath("config") ..
+                            "/lua/nbconfig/snippets"
+                    })
                 end,
             },
         },
@@ -43,6 +45,7 @@ return {
                     ["harper-ls"] = {
                         userDictPath = "~/.dotfiles/harper/dict.txt",
                         fileDictPath = "~/.dotfiles/harper/file_dictionaries/",
+                        dialect = "British",
                     },
                 },
             })
