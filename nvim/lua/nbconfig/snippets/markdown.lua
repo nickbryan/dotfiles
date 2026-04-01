@@ -4,7 +4,7 @@ local function fy_week()
     local now = os.time()
     local today = os.date("*t", now)
     local fy_start_year = today.month >= 4 and today.year or today.year - 1
-    local fy_start = os.time({ year = fy_start_year, month = 4, day = 1 })
+    local fy_start = os.time({ year = fy_start_year, month = 4, day = 1, hour = 0, min = 0, sec = 0 })
     local days = math.floor((now - fy_start) / 86400)
     return tostring(math.floor(days / 7) + 1)
 end
@@ -16,7 +16,7 @@ local function week_range()
     local monday = now - (wday - 2) * 86400
     if wday == 1 then monday = now - 6 * 86400 end
     local thursday = monday + 3 * 86400
-    return os.date("%b %d", monday) .. " - " .. os.date("%b %d", thursday)
+    return os.date("%B %d", monday) .. " - " .. os.date("%B %d", thursday)
 end
 
 local function daily_nodes(date_fn)
