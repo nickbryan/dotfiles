@@ -30,7 +30,6 @@ brew "tree-sitter"
 brew "tree-sitter-cli"
 brew "trunk"
 brew "wget"
-brew "zellij"
 
 cask "alfred"
 cask "antigravity"

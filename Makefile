@@ -1,4 +1,4 @@
-.PHONY: zsh zellij nvim brew setup
+.PHONY: zsh nvim brew setup
 
 .DEFAULT_GOAL := help
 
@@ -43,7 +43,7 @@ help:
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
 ## Run all setup targets for a new system.
-setup: zsh git-config brew nvim zellij iterm-import
+setup: zsh git-config brew nvim iterm-import
 
 ## @Git: Create .gitconfig.
 git-config:
@@ -70,11 +70,6 @@ brew:
 nvim:
 	mkdir -p ~/.config
 	ln -s ~/.dotfiles/nvim ~/.config/nvim
-
-## @Zellij: Link zellij config.
-zellij:
-	mkdir -p ~/.config/zellij
-	ln -s ~/.dotfiles/zellij/config.kdl ~/.config/zellij/config.kdl
 
 ## @zsh: Link .zshrc which will auto install omz on next source.
 zsh:

@@ -61,11 +61,6 @@ vim.api.nvim_create_autocmd("FileType", {
             })
         end, { buffer = args.buf, desc = "Markdown outline" })
 
-        -- Preview with glow in a zellij pane (press q to close)
-        vim.keymap.set("n", "<leader>mp", function()
-            local file = vim.fn.shellescape(vim.fn.expand("%:p"))
-            vim.fn.system("zellij action new-pane -d right -c -- glow -p " .. file)
-        end, { buffer = args.buf, desc = "Preview markdown with glow" })
 
         -- Open URL under cursor
         vim.keymap.set("n", "gx", function()
