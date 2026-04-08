@@ -17,9 +17,10 @@ vim.keymap.set("n", "<leader>pv", ":Neotree toggle<CR>", { noremap = true, desc 
 vim.keymap.set("n", "<Left>", ":bp<CR>", { noremap = true, desc = "Previous buffer" })
 vim.keymap.set("n", "<Right>", ":bn<CR>", { noremap = true, desc = "Next buffer" })
 
--- Move by line (for lines that span multiple rows)
-vim.keymap.set("n", "j", "gj", { noremap = true, desc = "Down (display line)" })
-vim.keymap.set("n", "k", "gk", { noremap = true, desc = "Up (display line)" })
+-- Move by display line, but use actual lines when a count is given (e.g. 3k)
+-- so that jumps match relative line numbers.
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, noremap = true, desc = "Down (display line aware)" })
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, noremap = true, desc = "Up (display line aware)" })
 
 -- Move selections
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { noremap = true })
