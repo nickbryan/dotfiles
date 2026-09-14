@@ -9,10 +9,13 @@ return {
     config = function()
         local ensure_installed = {
             "bash",
+            "c",
+            "cmake",
             "comment",
             "css",
             "diff",
             "dockerfile",
+            "doxygen",
             "git_config",
             "git_rebase",
             "gitattributes",

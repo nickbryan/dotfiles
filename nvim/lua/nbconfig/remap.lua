@@ -36,6 +36,9 @@ vim.keymap.set("n", "g*", "g*zz", { noremap = true, silent = true, desc = "Searc
 -- Shortcuts
 vim.keymap.set("n", "<leader>vl", ":Lazy<CR>", { noremap = true, desc = "Open Lazy" })
 vim.keymap.set("n", "<leader>vm", ":Mason<CR>", { noremap = true, desc = "Open Mason" })
+vim.keymap.set("n", "<leader>vi", function()
+    vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
+end, { noremap = true, desc = "Toggle inlay hints" })
 
 -- Quick save
 vim.keymap.set("n", "<leader>w", ":w<CR>", { noremap = true, desc = "Write the current buffer to disk" })

@@ -23,6 +23,9 @@ vim.diagnostic.config({
 vim.lsp.linked_editing_range.enable(true)
 vim.lsp.on_type_formatting.enable(true)
 
+-- *.h defaults to cpp in Neovim; this config's C work is plain C.
+vim.g.c_syntax_for_h = 1
+
 -- Lines
 vim.o.number = true
 vim.o.relativenumber = true

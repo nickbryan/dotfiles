@@ -1,4 +1,4 @@
-.PHONY: zsh nvim brew setup
+.PHONY: zsh nvim brew clangd setup
 
 .DEFAULT_GOAL := help
 
@@ -43,7 +43,7 @@ help:
 	@perl -e '$(HELP_FUN)' $(MAKEFILE_LIST)
 
 ## Run all setup targets for a new system.
-setup: zsh git-config brew nvim iterm-import
+setup: zsh git-config brew nvim clangd iterm-import
 
 ## @Git: Create .gitconfig.
 git-config:
@@ -65,6 +65,11 @@ iterm-import:
 ## @Homebrew: Link Brewfile.
 brew:
 	ln -s ~/.dotfiles/brew/Brewfile ~/Brewfile
+
+## @clangd: Link clangd config directory.
+clangd:
+	mkdir -p ~/.config
+	ln -s ~/.dotfiles/clangd ~/.config/clangd
 
 ## @Neovim: Link nvim config directory.
 nvim:
