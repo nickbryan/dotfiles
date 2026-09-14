@@ -3,6 +3,7 @@ return {
     dependencies = {
         { url = "https://github.com/nvim-tree/nvim-web-devicons" },
     },
+    event = "VeryLazy",
     keys = {
         { "<leader><leader>", function() require("fzf-lua").global() end,     mode = "n", noremap = true, desc = "Search everything" },
         { "<leader>pf",       function() require("fzf-lua").files() end,      mode = "n", noremap = true, desc = "Search for project files" },
@@ -22,4 +23,9 @@ return {
             cwd_only = true,
         },
     },
+    config = function(_, opts)
+        local fzf = require("fzf-lua")
+        fzf.setup(opts)
+        fzf.register_ui_select()
+    end,
 }

@@ -24,59 +24,33 @@ return {
         },
     },
     {
-        url = "https://github.com/williamboman/mason-lspconfig.nvim",
+        url = "https://github.com/mason-org/mason-lspconfig.nvim",
         event = { "BufReadPre", "BufNewFile" },
         dependencies = {
-            { url = "https://github.com/williamboman/mason.nvim", opts = {} },
+            { url = "https://github.com/mason-org/mason.nvim", opts = {} },
             { url = "https://github.com/neovim/nvim-lspconfig" },
         },
-        config = function()
-            vim.lsp.config("gopls", {
-                settings = {
-                    gopls = {
-                        buildFlags = { "-tags=unit,integration" },
-                        gofumpt = true,
-                    },
-                },
-            })
-
-            vim.lsp.config("harper_ls", {
-                settings = {
-                    ["harper-ls"] = {
-                        userDictPath = "~/.dotfiles/harper/dict.txt",
-                        fileDictPath = "~/.dotfiles/harper/file_dictionaries/",
-                        dialect = "British",
-                        linters = {
-                            LongSentences = false,
-                        },
-                    },
-                },
-            })
-
-            require("mason-lspconfig").setup({
-                ensure_installed = { "biome", "gopls", "harper_ls", "lua_ls", "marksman", "pyright", "rust_analyzer", "tailwindcss", "ts_ls" },
-            })
-
-            require("fzf-lua").register_ui_select();
-        end,
+        opts = {
+            ensure_installed = { "biome", "clangd", "gopls", "harper_ls", "lua_ls", "marksman", "pyright", "rust_analyzer", "tailwindcss", "ts_ls" },
+        },
     },
     {
         url = "https://github.com/stevearc/conform.nvim",
         event = "BufWritePre",
         dependencies = {
-            { url = "https://github.com/williamboman/mason.nvim" },
+            { url = "https://github.com/mason-org/mason.nvim" },
         },
         opts = {
             formatters_by_ft = {
                 markdown = { "prettier" },
             },
-            format_on_save = {},
+            format_on_save = { timeout_ms = 1000, lsp_format = "fallback" },
         },
     },
     {
         url = "https://github.com/zapling/mason-conform.nvim",
         dependencies = {
-            { url = "https://github.com/williamboman/mason.nvim" },
+            { url = "https://github.com/mason-org/mason.nvim" },
             { url = "https://github.com/stevearc/conform.nvim" },
         },
         opts = {},
@@ -84,7 +58,7 @@ return {
     {
         url = "https://github.com/mfussenegger/nvim-lint",
         dependencies = {
-            { url = "https://github.com/williamboman/mason.nvim" },
+            { url = "https://github.com/mason-org/mason.nvim" },
             { url = "https://github.com/rshkarin/mason-nvim-lint" },
         },
         event = { "BufWritePost", "BufReadPost", "InsertLeave" },

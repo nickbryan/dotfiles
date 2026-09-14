@@ -2,53 +2,59 @@
 vim.diagnostic.config({
     virtual_lines = { current_line = true },
     virtual_text = false,
+    severity_sort = true,
+    signs = {
+        text = {
+            [vim.diagnostic.severity.ERROR] = "󰅚",
+            [vim.diagnostic.severity.WARN] = "󰀪",
+            [vim.diagnostic.severity.INFO] = "󰋽",
+            [vim.diagnostic.severity.HINT] = "󰌶",
+        },
+    },
+    jump = {
+        on_jump = function()
+            vim.diagnostic.open_float({ scope = "cursor" })
+        end,
+    },
 })
 
--- Encoding
-vim.opt.fileencoding = "utf-8"
+-- LSP features that are off by default. The global form installs its own LspAttach
+-- handler and only attaches to servers advertising the capability.
+vim.lsp.linked_editing_range.enable(true)
+vim.lsp.on_type_formatting.enable(true)
 
 -- Lines
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.scrolloff = 8
-vim.opt.wrap = false
-vim.opt.cursorline = true
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.scrolloff = 8
+vim.o.wrap = false
+vim.o.cursorline = true
 
 -- Modeline
-vim.opt.modeline = false
+vim.o.modeline = false
 
--- Netrw
-vim.g.netrw_liststyle = 3
-vim.g.netrw_winsize = 30
-vim.g.netrw_preview = 1
-vim.g.netrw_localmkdiropt = " -p"
-vim.g.netrw_list_hide = ".DS_Store,.git/"
-vim.g.netrw_bufsettings = "noma nomod nu nowrap ro nobl"
-vim.g.netrw_cursor = 0
+-- Folds (treesitter drives foldexpr; start with everything unfolded)
+vim.o.foldlevelstart = 99
 
 -- Search
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
-
--- Shell
-vim.opt.shell = "/bin/zsh"
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
 -- Spaces
-vim.opt.expandtab = true
-vim.opt.shiftwidth = 4
-vim.opt.softtabstop = 4
-vim.opt.tabstop = 4
+vim.o.expandtab = true
+vim.o.shiftwidth = 4
+vim.o.softtabstop = 4
+vim.o.tabstop = 4
 
 -- UI
-vim.opt.colorcolumn = "120"
-vim.opt.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
-vim.opt.showmode = false
-vim.opt.signcolumn = "yes"
-vim.opt.termguicolors = true
-vim.opt.timeoutlen = 300
-vim.opt.updatetime = 200
-vim.opt.visualbell = true
+vim.o.colorcolumn = "120"
+vim.o.guicursor = "n-v-c:block-Cursor/lCursor-blinkon0,i-ci:ver25-Cursor/lCursor,r-cr:hor20-Cursor/lCursor"
+vim.o.showmode = false
+vim.o.signcolumn = "yes"
+vim.o.timeoutlen = 300
+vim.o.updatetime = 200
+vim.o.visualbell = true
 vim.o.winborder = "rounded"
 
 -- Undo
-vim.opt.undofile = true
+vim.o.undofile = true

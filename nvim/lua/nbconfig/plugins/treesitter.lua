@@ -5,7 +5,7 @@ return {
     dependencies = {
         url = "https://github.com/nvim-treesitter/nvim-treesitter-context",
     },
-    event = { "BufReadPre", "BufNewFile" },
+    lazy = false,
     config = function()
         local ensure_installed = {
             "bash",
@@ -67,6 +67,8 @@ return {
             callback = function(ev)
                 vim.treesitter.start(ev.buf)
                 vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                vim.wo[0][0].foldmethod = "expr"
             end
         })
     end,

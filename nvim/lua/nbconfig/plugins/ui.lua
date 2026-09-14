@@ -1,6 +1,6 @@
 return {
     {
-        url = "https://github.com/edeneast/nightfox.nvim",
+        url = "https://github.com/EdenEast/nightfox.nvim",
         lazy = false,
         priority = 1000,
         config = function()
@@ -29,12 +29,6 @@ return {
                 },
             },
         },
-    },
-    {
-        url = "https://github.com/prichrd/netrw.nvim",
-        dependencies = { url = "https://github.com/nvim-tree/nvim-web-devicons" },
-        ft = "netrw",
-        config = true,
     },
     {
         url = "https://github.com/nvim-neo-tree/neo-tree.nvim",
